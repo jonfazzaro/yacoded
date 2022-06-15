@@ -89,7 +89,7 @@ describe("The payment generator", () => {
 jest.mock("./base");
 
 const _mocked = {
-  record: { getCellValue: jest.fn(() => "11/14/2001") },
+  record: { getCellValue: jest.fn() },
 };
 
 _mocked.selectRecordsAsync = jest.fn(() =>
