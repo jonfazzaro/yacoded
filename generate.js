@@ -8,7 +8,7 @@ module.exports = {
 
 async function latestPaymentDate() {
 
-    let query = await base.getTable("Payments").selectRecordsAsync({
+    let query = await base.getTable().selectRecordsAsync({
         fields: ['Date'],
         sorts: [{
             field: "Date",
