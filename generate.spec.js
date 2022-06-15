@@ -109,6 +109,7 @@ describe("The payment generator", () => {
 });
 
 jest.mock("./base");
+jest.mock("./output");
 
 const _mocked = {
   records: [],
