@@ -71,7 +71,8 @@ describe("The payment generator", () => {
   describe("when generating payments", () => {
     beforeEach(async () => {
         const hospitalPayment = {getCellValue:jest.fn(() => 25.19)}
-        const doctorPayment = {getCellValue:jest.fn(() => 0.0)}
+        const doctorPayment = {getCellValue:jest.fn(() => 20.00)}
+        const dentistPayment = {getCellValue:jest.fn(() => 0.0)}
         _mocked.records = [
             {}
         ]
