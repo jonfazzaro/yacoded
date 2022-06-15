@@ -108,8 +108,7 @@ describe("The payment generator", () => {
     });
 
     it('outputs the results', () => {
-        expect(output)
-        
+        expect(output.markdown).toHaveBeenCalledWith("Created 3 of 2 payments.")
     });
   });
 });

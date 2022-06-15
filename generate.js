@@ -1,4 +1,5 @@
 const base = require("./base");
+const output = require("./output");
 
 module.exports = {
   latestPaymentDate,
@@ -34,7 +35,7 @@ async function generatePayments(date) {
       },
     }));
   let created = await base.getTable("Payments").createRecordsAsync(payments);
-  //   output.markdown(`Created ${created.length} of ${payments.length} payments.`);
+    output.markdown(`Created ${created.length} of ${payments.length} payments.`);
 }
 
 async function queryPayingAccounts() {
