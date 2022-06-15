@@ -73,7 +73,7 @@ describe("The payment generator", () => {
     const hospitalPayment = { id: 3, getCellValue: jest.fn(() => 25.19) };
     const doctorPayment = { id: 4, getCellValue: jest.fn(() => 20.0) };
     const dentistPayment = { id: 7, getCellValue: jest.fn(() => 0.0) };
-    
+
     beforeEach(async () => {
       _mocked.getTable.mockClear();
       _mocked.records = [hospitalPayment, doctorPayment, dentistPayment];
@@ -91,10 +91,13 @@ describe("The payment generator", () => {
       );
     });
 
-    it("creates Payments", () => {
+    it('reads the Payment field on each account', () => {
       _mocked.records.forEach(r => {
         expect(r.getCellValue).toHaveBeenCalledWith(" Payment ");
       });
+    });
+
+    it("creates Payments", () => {
       expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
 
       expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
