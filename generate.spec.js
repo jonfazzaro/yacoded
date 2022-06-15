@@ -73,4 +73,5 @@ _mocked.selectRecordsAsync = jest.fn(() =>
 
 _mocked.getTable = jest.fn(() => ({
   selectRecordsAsync: _mocked.selectRecordsAsync,
+  getView: _mocked.getTable
 }));
