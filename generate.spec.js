@@ -31,6 +31,7 @@ describe("The payment generator", () => {
   describe("when querying the last payment date", () => {
     it("queries the Payments table", async () => {
       const result = await generator.latestPaymentDate();
+      expect(result.toLocaleDateString()).toEqual("11/14/2001")
     });
   });
 });
