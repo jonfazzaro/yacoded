@@ -89,6 +89,7 @@ describe("The payment generator", () => {
     });
 
     it("creates Payments", () => {
+        expect()
 
     });
   });
@@ -103,6 +104,10 @@ const _mocked = {
 
 _mocked.selectRecordsAsync = jest.fn(() =>
   Promise.resolve({ records: _mocked.records })
+);
+
+_mocked.createRecordsAsync = jest.fn(() =>
+  Promise.resolve([1,2,3])
 );
 
 _mocked.getView = jest.fn();
