@@ -15,15 +15,15 @@ function addMonths(date, months) {
 }
 
 async function latestPaymentDate() {
-  let query = await base
+  const query = await base
     .getTable("Payments")
     .selectRecordsAsync(byDateDescending);
   return date(query.records[0]);
 }
 
 async function generatePayments(date) {
-  let results = await queryPayingAccounts();
-  let created = await create(payments(results.records, date))
+  const results = await queryPayingAccounts();
+  const created = await create(payments(results.records, date))
   output.markdown(`Created ${created.length} of ${payments.length} payments.`);
 }
 
