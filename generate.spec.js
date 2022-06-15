@@ -59,6 +59,16 @@ describe("The payment generator", () => {
       expect(result.toLocaleDateString()).toEqual("11/14/2001");
     });
   });
+
+  describe('when generating payments', () => {
+    it('queries the Paying Accounts', async () => {
+      base.getTable = _mocked.getTable;
+
+      await generator.generatePayments(new Date())
+        
+    });
+    
+  });
 });
 
 jest.mock("./base");
