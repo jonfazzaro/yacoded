@@ -35,7 +35,7 @@ describe("The payment generator", () => {
       result = await generator.latestPaymentDate();
     });
 
-    it("queries the Payments table", async () => {
+    it("queries the Payments table", () => {
       expect(base.getTable).toHaveBeenCalledWith("Payments");
       expect(result.toLocaleDateString()).toEqual("11/14/2001");
     });
