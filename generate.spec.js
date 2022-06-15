@@ -30,13 +30,7 @@ describe("The payment generator", () => {
 
   describe("when querying the last payment date", () => {
     it("queries the Payments table", async () => {
-      base.getTable = jest.fn(() => ({
-        selectRecordsAsync: jest.fn(() =>
-          Promise.resolve({
-            records: [{ getCellValue: jest.fn(() => "11/14/2001") }],
-          })
-        ),
-      }));
+      base.getTable = _mocked.getTable;
       const result = await generator.latestPaymentDate();
       expect(base.getTable).toHaveBeenCalledWith("Payments");
       expect(result.toLocaleDateString()).toEqual("11/14/2001");
@@ -46,13 +40,12 @@ describe("The payment generator", () => {
 
 jest.mock("./base");
 
-// , jest.fn(() => ({
-//   getTable: jest.fn(() => ({
-//     selectRecordsAsync: jest.fn(() =>
-//     Promise.resolve({
-//         records: [
-//             { getCellValue: jest.fn(() => "11/14/2001") },
-//         ],
-//       })),
-//   }))
-// })));
+const _mocked = {
+    getTable: jest.fn(() => ({
+        selectRecordsAsync: jest.fn(() =>
+          Promise.resolve({
+            records: [{ getCellValue: jest.fn(() => "11/14/2001") }],
+          })
+        ),
+      }))
+}
