@@ -11,10 +11,10 @@ async function latestPaymentDate() {
     .selectRecordsAsync({
         fields: ["Date"],
         sorts: [
-        {
-            field: "Date",
-            direction: "desc",
-        },
+            {
+                field: "Date",
+                direction: "desc",
+            },
         ],
     });
 
