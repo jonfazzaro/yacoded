@@ -35,7 +35,8 @@ function payments(accounts, date) {
 }
 
 async function create(payments) {
-   return await base.getTable("Payments").createRecordsAsync(payments); 
+   return await base.getTable("Payments")
+    .createRecordsAsync(payments); 
 }
 
 function outZeroDollarPayments(account) {
