@@ -32,10 +32,6 @@ async function generatePayments(date) {
   output.markdown(`Created ${created.length} of ${payments.length} payments.`);
 }
 
-function payments(accounts, date) {
-    return ;
-}
-
 async function create(payments) {
    return await base.getTable("Payments")
     .createRecordsAsync(payments); 
