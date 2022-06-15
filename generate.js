@@ -38,6 +38,10 @@ async function generatePayments(date) {
     output.markdown(`Created ${created.length} of ${payments.length} payments.`);
 }
 
+function outZeroDollarPayments(account) {
+    return 0 < paymentAmount(account)
+}
+
 async function queryPayingAccounts() {
   return await base
     .getTable("Accounts")
