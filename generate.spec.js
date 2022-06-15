@@ -101,9 +101,7 @@ describe("The payment generator", () => {
 
     it("does not create zero dollar payments", () => {
       expect(_mocked.createRecordsAsync).not.toHaveBeenCalledWith(
-        expect.arrayContaining([
-          _expected.zeroDollarPayment
-        ])
+        expect.arrayContaining([ _expected.zeroDollarPayment ])
       );
     });
   });
