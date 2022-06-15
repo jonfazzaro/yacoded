@@ -3,7 +3,7 @@ const generator = require("./generate");
 
 describe("The payment generator", () => {
   beforeEach(() => {
-      _mocked.getTable.mockClear();
+    _mocked.getTable.mockClear();
     base.getTable = _mocked.getTable;
   });
   describe("when adding months", () => {
@@ -135,7 +135,7 @@ jest.mock("./base");
 const _mocked = {
   records: [],
   paymentRecord: { getCellValue: jest.fn() },
-  today: new Date("3/4/2005")
+  today: new Date("3/4/2005"),
 };
 
 const hospitalPayment = { id: 3, getCellValue: jest.fn(() => 25.19) };
