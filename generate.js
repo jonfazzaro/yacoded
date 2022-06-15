@@ -30,7 +30,7 @@ async function generatePayments(date) {
       fields: {
         Date: date,
         Amount: account.getCellValue(" Payment "),
-                Account: [{ id: account.id }],
+        Account: [{ id: account.id }],
       },
     }));
   let created = await base
