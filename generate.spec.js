@@ -114,6 +114,7 @@ _mocked.getView = jest.fn();
 
 _mocked.getTable = jest.fn(() => ({
   selectRecordsAsync: _mocked.selectRecordsAsync,
+  createRecordsAsync: _mocked.createRecordsAsync,
   getView: _mocked.getView,
 }));
 
