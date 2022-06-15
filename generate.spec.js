@@ -11,9 +11,7 @@ describe("The payment generator", () => {
 
   describe("given a date in November", () => {
     it("rolls over to January of the next year", () => {
-      expect(generator.addMonths(new Date("11/12/2021"), 2)).toEqual(
-        new Date("1/12/2022")
-      );
+        expectDateWhenAddingMonthsTo("11/12/2021", 2, "1/12/2022")
     });
   });
 
