@@ -63,9 +63,9 @@ describe("The payment generator", () => {
   describe('when generating payments', () => {
     it('queries the Paying Accounts', async () => {
       base.getTable = _mocked.getTable;
-
       await generator.generatePayments(new Date())
         
+      expect(_mocked.getTable).toHaveBeenCalledWith("Accounts")
     });
     
   });

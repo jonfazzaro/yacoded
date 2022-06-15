@@ -22,8 +22,8 @@ async function latestPaymentDate() {
 }
 
 async function generatePayments(date) {
-//   let accounts = await base
-//     .getTable("Accounts")
+  let accounts = await base
+    .getTable("Accounts")
 //     .getView("Paying")
 //     .selectRecordsAsync({ fields: [" Payment "] });
 //   let payments = accounts.records
