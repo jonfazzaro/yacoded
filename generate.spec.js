@@ -79,9 +79,7 @@ describe("The payment generator", () => {
 
     it("requests the Payment field", () => {
       expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(
-        expect.objectContaining({
-          fields: [" Payment "],
-        })
+        expect.objectContaining({ fields: [" Payment "], })
       );
     });
   });
