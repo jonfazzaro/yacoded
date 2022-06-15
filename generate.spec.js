@@ -94,6 +94,7 @@ describe("The payment generator", () => {
         expect.arrayContaining([{
           fields: {
             Date: date,
+            Amount: 25.19
           },
         }])
       );
