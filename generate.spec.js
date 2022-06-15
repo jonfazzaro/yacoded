@@ -34,6 +34,7 @@ describe("The payment generator", () => {
   describe("when querying the last payment date", () => {
     let result;
     beforeEach(async () => {
+        _mocked.record.getCellValue.mockReturnValue("11/14/2001")
       result = await generator.latestPaymentDate();
     });
 
