@@ -100,6 +100,7 @@ describe("The payment generator", () => {
             fields: {
               Date: date,
               Amount: 25.19,
+              Account: [{id:3}]
             },
           },
         ])
