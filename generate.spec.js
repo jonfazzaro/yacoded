@@ -73,6 +73,7 @@ describe("The payment generator", () => {
     const hospitalPayment = { id: 3, getCellValue: jest.fn(() => 25.19) };
     const doctorPayment = { id: 4, getCellValue: jest.fn(() => 20.0) };
     const dentistPayment = { id: 7, getCellValue: jest.fn(() => 0.0) };
+    
     beforeEach(async () => {
       _mocked.getTable.mockClear();
       _mocked.records = [hospitalPayment, doctorPayment, dentistPayment];
