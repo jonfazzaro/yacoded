@@ -7,8 +7,9 @@ module.exports = {
 };
 
 async function latestPaymentDate() {
-  let results = await base.getTable("Payments").selectRecordsAsync(byDateDescending);
-  return date(results.records[0]);
+  let query = await base.getTable("Payments")
+    .selectRecordsAsync(byDateDescending);
+  return date(query.records[0]);
 }
 
 function date(payment) {
