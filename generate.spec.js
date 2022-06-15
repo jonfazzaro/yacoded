@@ -70,9 +70,9 @@ describe("The payment generator", () => {
 
   describe("when generating payments", () => {
     const date = new Date();
-    const hospitalPayment = { getCellValue: jest.fn(() => 25.19) };
-    const doctorPayment = { getCellValue: jest.fn(() => 20.0) };
-    const dentistPayment = { getCellValue: jest.fn(() => 0.0) };
+    const hospitalPayment = { id: 3, getCellValue: jest.fn(() => 25.19) };
+    const doctorPayment = { id: 4, getCellValue: jest.fn(() => 20.0) };
+    const dentistPayment = {  id: 7, getCellValue: jest.fn(() => 0.0) };
     beforeEach(async () => {
       _mocked.records = [hospitalPayment, doctorPayment, dentistPayment];
       await generator.generatePayments(date);
