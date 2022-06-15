@@ -70,12 +70,10 @@ describe("The payment generator", () => {
 
   describe("when generating payments", () => {
     beforeEach(async () => {
-        const hospitalPayment = {getCellValue:jest.fn(() => 25.19)}
-        const doctorPayment = {getCellValue:jest.fn(() => 20.00)}
-        const dentistPayment = {getCellValue:jest.fn(() => 0.0)}
-        _mocked.records = [
-            {}
-        ]
+      const hospitalPayment = { getCellValue: jest.fn(() => 25.19) };
+      const doctorPayment = { getCellValue: jest.fn(() => 20.0) };
+      const dentistPayment = { getCellValue: jest.fn(() => 0.0) };
+      _mocked.records = [hospitalPayment, doctorPayment, dentistPayment];
       await generator.generatePayments(new Date());
     });
     it("queries the Paying Accounts", () => {
@@ -85,14 +83,11 @@ describe("The payment generator", () => {
 
     it("requests the Payment field", () => {
       expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(
-        expect.objectContaining({ fields: [" Payment "], })
+        expect.objectContaining({ fields: [" Payment "] })
       );
     });
 
-    it('filter out accounts set to pay nothing', () => {
-
-        
-    });
+    it("filter out accounts set to pay nothing", () => {});
   });
 });
 
