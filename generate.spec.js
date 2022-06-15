@@ -76,6 +76,7 @@ describe("The payment generator", () => {
       _mocked.records = [hospitalPayment, doctorPayment, dentistPayment];
       await generator.generatePayments(new Date());
     });
+    
     it("queries the Paying Accounts", () => {
       expect(_mocked.getTable).toHaveBeenCalledWith("Accounts");
       expect(_mocked.getView).toHaveBeenCalledWith("Paying");
