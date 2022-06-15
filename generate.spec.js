@@ -1,15 +1,15 @@
 const generator = require("./generate");
 
 describe("The payment generator", () => {
-  describe("given a date before November", () => {
+  describe("given a date in the middle of the year", () => {
     it("adds months in the same year", () => {
-        expectDateWhenAddingMonthsTo("10/23/2015", 2, "12/23/2015")
+      expectDateWhenAddingMonthsTo("5/23/2015", 3, "8/23/2015");
     });
   });
 
-  describe("given a date in November", () => {
+  describe("given a date near the end of the year", () => {
     it("rolls over to January of the next year", () => {
-        expectDateWhenAddingMonthsTo("11/12/2021", 2, "1/12/2022")
+      expectDateWhenAddingMonthsTo("11/12/2021", 2, "1/12/2022");
     });
   });
 
