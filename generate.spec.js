@@ -40,7 +40,7 @@ jest.mock("./base", () => ({
     selectRecordsAsync: () =>
       Promise.resolve({
         records: [
-            { getCellValue: jest.fn(() => "11/14/1977") },
+            { getCellValue: jest.fn(() => "11/14/2001") },
         ],
       }),
   }),
