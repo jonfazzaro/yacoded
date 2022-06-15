@@ -3,6 +3,7 @@ const generator = require("./generate");
 
 describe("The payment generator", () => {
   beforeEach(() => {
+      _mocked.getTable.mockClear();
     base.getTable = _mocked.getTable;
   });
   describe("when adding months", () => {
@@ -70,7 +71,6 @@ describe("The payment generator", () => {
 
   describe("when generating payments", () => {
     beforeEach(async () => {
-      _mocked.getTable.mockClear();
       _mocked.records = [hospitalPayment, doctorPayment, dentistPayment];
       await generator.generatePayments(_mocked.today);
     });
