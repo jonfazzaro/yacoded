@@ -69,7 +69,7 @@ describe("The payment generator", () => {
   });
 
   describe("when generating payments", () => {
-    const date = new Date();
+    const today = new Date();
     const hospitalPayment = { id: 3, getCellValue: jest.fn(() => 25.19) };
     const doctorPayment = { id: 4, getCellValue: jest.fn(() => 20.0) };
     const dentistPayment = { id: 7, getCellValue: jest.fn(() => 0.0) };
@@ -77,7 +77,7 @@ describe("The payment generator", () => {
     beforeEach(async () => {
       _mocked.getTable.mockClear();
       _mocked.records = [hospitalPayment, doctorPayment, dentistPayment];
-      await generator.generatePayments(date);
+      await generator.generatePayments(today);
     });
 
     it("queries the Paying Accounts", () => {
@@ -91,7 +91,7 @@ describe("The payment generator", () => {
       );
     });
 
-    it('reads the Payment field on each account', () => {
+    it("reads the Payment field on each account", () => {
       _mocked.records.forEach(r => {
         expect(r.getCellValue).toHaveBeenCalledWith(" Payment ");
       });
@@ -103,14 +103,14 @@ describe("The payment generator", () => {
         expect.arrayContaining([
           {
             fields: {
-              Date: date,
+              Date: today,
               Amount: 25.19,
               Account: [{ id: 3 }],
             },
           },
           {
             fields: {
-              Date: date,
+              Date: today,
               Amount: 20.0,
               Account: [{ id: 4 }],
             },
@@ -119,19 +119,18 @@ describe("The payment generator", () => {
       );
     });
 
-    it('does not create zero dollar payments', () => {
+    it("does not create zero dollar payments", () => {
       expect(_mocked.createRecordsAsync).not.toHaveBeenCalledWith(
         expect.arrayContaining([
           {
             fields: {
-              Date: date,
+              Date: today,
               Amount: 0,
               Account: [{ id: 7 }],
             },
           },
         ])
       );
-
     });
   });
 });
