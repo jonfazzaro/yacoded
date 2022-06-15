@@ -69,11 +69,6 @@ describe("The payment generator", () => {
   });
 
   describe("when generating payments", () => {
-    const today = new Date();
-    const hospitalPayment = { id: 3, getCellValue: jest.fn(() => 25.19) };
-    const doctorPayment = { id: 4, getCellValue: jest.fn(() => 20.0) };
-    const dentistPayment = { id: 7, getCellValue: jest.fn(() => 0.0) };
-
     beforeEach(async () => {
       _mocked.getTable.mockClear();
       _mocked.records = [hospitalPayment, doctorPayment, dentistPayment];
@@ -141,6 +136,11 @@ const _mocked = {
   records: [],
   paymentRecord: { getCellValue: jest.fn() },
 };
+
+const today = new Date();
+const hospitalPayment = { id: 3, getCellValue: jest.fn(() => 25.19) };
+const doctorPayment = { id: 4, getCellValue: jest.fn(() => 20.0) };
+const dentistPayment = { id: 7, getCellValue: jest.fn(() => 0.0) };
 
 _mocked.selectRecordsAsync = jest.fn(() =>
   Promise.resolve({ records: _mocked.records })
