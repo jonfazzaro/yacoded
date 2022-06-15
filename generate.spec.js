@@ -37,6 +37,9 @@ describe("The payment generator", () => {
 
     it("queries the Payments table", () => {
       expect(base.getTable).toHaveBeenCalledWith("Payments");
+    });
+
+    it('returns the date of the first record', () => {
       expect(result.toLocaleDateString()).toEqual("11/14/2001");
     });
   });
