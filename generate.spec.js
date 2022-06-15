@@ -6,6 +6,7 @@ describe("The payment generator", () => {
   beforeEach(() => {
     _mocked.getTable.mockClear();
     base.getTable = _mocked.getTable;
+    output.markdown = jest.fn()
   });
   describe("when adding months", () => {
     describe("given a date in the middle of the year", () => {
@@ -104,6 +105,11 @@ describe("The payment generator", () => {
       expect(_mocked.createRecordsAsync).not.toHaveBeenCalledWith(
         expect.arrayContaining([ _expected.zeroDollarPayment ])
       );
+    });
+
+    it('outputs the results', () => {
+        expect(output)
+        
     });
   });
 });
