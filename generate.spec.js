@@ -72,9 +72,9 @@ describe("The payment generator", () => {
     const date = new Date();
     const hospitalPayment = { id: 3, getCellValue: jest.fn(() => 25.19) };
     const doctorPayment = { id: 4, getCellValue: jest.fn(() => 20.0) };
-    const dentistPayment = {  id: 7, getCellValue: jest.fn(() => 0.0) };
+    const dentistPayment = { id: 7, getCellValue: jest.fn(() => 0.0) };
     beforeEach(async () => {
-        _mocked.getTable.mockClear();
+      _mocked.getTable.mockClear();
       _mocked.records = [hospitalPayment, doctorPayment, dentistPayment];
       await generator.generatePayments(date);
     });
@@ -91,10 +91,10 @@ describe("The payment generator", () => {
     });
 
     it("creates Payments", () => {
-        _mocked.records.forEach(r => {
-            expect(r.getCellValue).toHaveBeenCalledWith(" Payment ")
-        })
-        expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
+      _mocked.records.forEach(r => {
+        expect(r.getCellValue).toHaveBeenCalledWith(" Payment ");
+      });
+      expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
 
       expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
         expect.arrayContaining([
@@ -102,26 +102,30 @@ describe("The payment generator", () => {
             fields: {
               Date: date,
               Amount: 25.19,
-              Account: [{id:3}]
+              Account: [{ id: 3 }],
             },
           },
           {
             fields: {
               Date: date,
               Amount: 20.0,
-              Account: [{id:4}]
+              Account: [{ id: 4 }],
             },
           },
         ])
       );
 
-      expect(_mocked.createRecordsAsync).not.toHaveBeenCalledWith(expect.arrayContaining([{
-        fields: { 
-            Date: date,
-            Amount: 0,
-            Account: [{id:7}]
-        }
-      }]))
+      expect(_mocked.createRecordsAsync).not.toHaveBeenCalledWith(
+        expect.arrayContaining([
+          {
+            fields: {
+              Date: date,
+              Amount: 0,
+              Account: [{ id: 7 }],
+            },
+          },
+        ])
+      );
     });
   });
 });
