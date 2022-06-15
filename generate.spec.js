@@ -135,6 +135,7 @@ jest.mock("./base");
 const _mocked = {
   records: [],
   paymentRecord: { getCellValue: jest.fn() },
+  today: new Date("3/4/2005")
 };
 
 const today = new Date();
