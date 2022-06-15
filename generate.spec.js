@@ -1,4 +1,5 @@
 const base = require("./base");
+const output = require("./output");
 const generator = require("./generate");
 
 describe("The payment generator", () => {
