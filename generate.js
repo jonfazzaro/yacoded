@@ -25,11 +25,15 @@ async function latestPaymentDate() {
 
 async function generatePayments(date) {
   const results = await queryPayingAccounts();
-  const payments = results.records
+  const proposed = payments(results.records, date)
+  const created = await create(proposed)
+  output.markdown(`Created ${created.length} of ${proposed.length} payments.`);
+}
+
+function payments(accounts, date) {
+    return accounts
         .filter(outZeroDollarPayments)
-        .map(toPaymentsOn(date))
-  const created = await create(payments)
-  output.markdown(`Created ${created.length} of ${payments.length} payments.`);
+        .map(toPaymentsOn(date));
 }
 
 async function create(payments) {
