@@ -103,6 +103,13 @@ describe("The payment generator", () => {
               Account: [{id:3}]
             },
           },
+          {
+            fields: {
+              Date: date,
+              Amount: 20.0,
+              Account: [{id:4}]
+            },
+          },
         ])
       );
     });
