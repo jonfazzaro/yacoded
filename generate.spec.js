@@ -55,6 +55,7 @@ describe("The payment generator", () => {
     });
 
     it("returns the date of the first record", () => {
+        expect(_mocked.record.getCellValue).toHaveBeenCalledWith("Date")
       expect(result.toLocaleDateString()).toEqual("11/14/2001");
     });
   });

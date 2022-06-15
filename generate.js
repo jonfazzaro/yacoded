@@ -17,7 +17,7 @@ async function latestPaymentDate() {
     })
 
     return new Date(query.records[0].getCellValue(
-        //"Date"
+        "Date"
         ))
 
 }
