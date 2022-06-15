@@ -38,9 +38,9 @@ async function generatePayments(date) {
 
 async function queryPayingAccounts() {
     return await base
-    .getTable("Accounts")
-    .getView("Paying")
-    .selectRecordsAsync({ fields: [" Payment "] });
+        .getTable("Accounts")
+        .getView("Paying")
+        .selectRecordsAsync({ fields: [" Payment "] });
 }
 
 function date(payment) {
