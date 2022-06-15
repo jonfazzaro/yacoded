@@ -1,0 +1,16 @@
+{
+  "name": "pennydrop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "generate.js",
+  "scripts": {
+    "test": "npx jest",
+    "tdd": "npx jest --watchAll",
+    "tcr": "npx nodemon -e js -x \"npx jest && git add -A && git commit -m 'wip'\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^28.1.1"
+  }
+}
