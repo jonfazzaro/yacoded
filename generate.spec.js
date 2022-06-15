@@ -90,7 +90,10 @@ describe("The payment generator", () => {
     });
 
     it("creates Payments", () => {
-      expect(hospitalPayment.getCellValue).toHaveBeenCalledWith(" Payment ");
+        _mocked.records.forEach(r => {
+            expect(r.getCellValue).toHaveBeenCalledWith(" Payment ")
+        })
+
       expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
         expect.arrayContaining([
           {
