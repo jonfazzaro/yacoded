@@ -35,7 +35,7 @@ describe("The payment generator", () => {
     let result;
     beforeEach(async () => {
       _mocked.paymentRecord.getCellValue.mockReturnValue("11/14/2001");
-      _mocked.records = [_mocked.paymentRecord]
+      _mocked.records = [_mocked.paymentRecord];
       result = await generator.latestPaymentDate();
     });
 
@@ -70,7 +70,6 @@ describe("The payment generator", () => {
 
   describe("when generating payments", () => {
     beforeEach(async () => {
-        
       await generator.generatePayments(new Date());
     });
     it("queries the Paying Accounts", () => {
@@ -91,12 +90,12 @@ describe("The payment generator", () => {
 jest.mock("./base");
 
 const _mocked = {
-    records: [],
-    paymentRecord: { getCellValue: jest.fn() },
+  records: [],
+  paymentRecord: { getCellValue: jest.fn() },
 };
 
 _mocked.selectRecordsAsync = jest.fn(() =>
-  Promise.resolve({ records: _mocked.records})
+  Promise.resolve({ records: _mocked.records })
 );
 
 _mocked.getView = jest.fn();
