@@ -25,7 +25,7 @@ async function latestPaymentDate() {
 async function generatePayments(date) {
   let accounts = await queryPayingAccounts();
   let payments = accounts.records
-    //     .filter(account => 0 < account.getCellValue(" Payment "))
+        .filter(account => 0 < account.getCellValue(" Payment "))
     .map(account => ({
       fields: {
         Date: date,

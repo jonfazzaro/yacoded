@@ -112,6 +112,14 @@ describe("The payment generator", () => {
           },
         ])
       );
+
+      expect(_mocked.createRecordsAsync).not.toHaveBeenCalledWith(expect.arrayContaining([{
+        fields: { 
+            Date: date,
+            Amount: 0,
+            Account: [{id:7}]
+        }
+      }]))
     });
   });
 });
