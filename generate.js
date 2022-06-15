@@ -7,15 +7,16 @@ module.exports = {
 };
 
 async function latestPaymentDate() {
-  let query = await base.getTable("Payments").selectRecordsAsync({
-    fields: ["Date"],
-    sorts: [
-      {
-        field: "Date",
-        direction: "desc",
-      },
-    ],
-  });
+  let query = await base.getTable("Payments")
+    .selectRecordsAsync({
+        fields: ["Date"],
+        sorts: [
+        {
+            field: "Date",
+            direction: "desc",
+        },
+        ],
+    });
 
   return new Date(query.records[0].getCellValue("Date"));
 }
