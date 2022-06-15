@@ -16,6 +16,11 @@ function addMonths(date, months) {
   return date;
 }
 
+const byDateDescending = {
+  fields: ["Date"],
+  sorts: [{ field: "Date", direction: "desc" }],
+};
+
 async function latestPaymentDate() {
   const query = await base
     .getTable("Payments")
@@ -25,20 +30,17 @@ async function latestPaymentDate() {
 
 async function generatePayments(date) {
   const results = await queryPayingAccounts();
-  const proposed = payments(results.records, date)
-  const created = await create(proposed)
+  const proposed = payments(results.records, date);
+  const created = await create(proposed);
   output.markdown(`Created ${created.length} of ${proposed.length} payments.`);
 }
 
 function payments(accounts, date) {
-    return accounts
-        .filter(outZeroDollarPayments)
-        .map(toPaymentsOn(date));
+  return accounts.filter(outZeroDollarPayments).map(toPaymentsOn(date));
 }
 
 async function create(payments) {
-   return await base.getTable("Payments")
-    .createRecordsAsync(payments); 
+  return await base.getTable("Payments").createRecordsAsync(payments);
 }
 
 function outZeroDollarPayments(account) {
@@ -69,8 +71,3 @@ function date(payment) {
 function paymentAmount(account) {
   return account.getCellValue(" Payment ");
 }
-
-const byDateDescending = {
-  fields: ["Date"],
-  sorts: [{ field: "Date", direction: "desc" }],
-};
