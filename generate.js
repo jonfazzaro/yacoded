@@ -26,7 +26,7 @@ async function latestPaymentDate() {
 async function generatePayments(date) {
   let accounts = await queryPayingAccounts();
   let payments = accounts.records
-    .filter(account => 0 < paymentAmount(account))
+    .filter(outZeroDollarPayments)
     .map(account => ({
       fields: {
         Date: date,
