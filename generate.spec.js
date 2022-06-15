@@ -72,7 +72,7 @@ describe("The payment generator", () => {
     beforeEach(async () => {
       _mocked.getTable.mockClear();
       _mocked.records = [hospitalPayment, doctorPayment, dentistPayment];
-      await generator.generatePayments(today);
+      await generator.generatePayments(_mocked.today);
     });
 
     it("queries the Paying Accounts", () => {
@@ -98,14 +98,14 @@ describe("The payment generator", () => {
         expect.arrayContaining([
           {
             fields: {
-              Date: today,
+              Date: _mocked.today,
               Amount: 25.19,
               Account: [{ id: 3 }],
             },
           },
           {
             fields: {
-              Date: today,
+              Date: _mocked.today,
               Amount: 20.0,
               Account: [{ id: 4 }],
             },
@@ -119,7 +119,7 @@ describe("The payment generator", () => {
         expect.arrayContaining([
           {
             fields: {
-              Date: today,
+              Date: _mocked.today,
               Amount: 0,
               Account: [{ id: 7 }],
             },
@@ -138,7 +138,6 @@ const _mocked = {
   today: new Date("3/4/2005")
 };
 
-const today = new Date();
 const hospitalPayment = { id: 3, getCellValue: jest.fn(() => 25.19) };
 const doctorPayment = { id: 4, getCellValue: jest.fn(() => 20.0) };
 const dentistPayment = { id: 7, getCellValue: jest.fn(() => 0.0) };
