@@ -26,4 +26,10 @@ describe("The payment generator", () => {
       );
     }
   });
+
+
+  describe('when querying the last payment date', () => {
+    
+    
+  });
 });
