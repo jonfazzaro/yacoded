@@ -2,6 +2,9 @@ const base = require("./base");
 const generator = require("./generate");
 
 describe("The payment generator", () => {
+    beforeEach(() => {
+      base.getTable = _mocked.getTable;
+    });
   describe("when adding months", () => {
     describe("given a date in the middle of the year", () => {
       it("adds months in the same year", () => {
@@ -31,7 +34,6 @@ describe("The payment generator", () => {
   describe("when querying the last payment date", () => {
     let result;
     beforeEach(async () => {
-      base.getTable = _mocked.getTable;
       result = await generator.latestPaymentDate();
     });
 
@@ -62,7 +64,6 @@ describe("The payment generator", () => {
 
   describe('when generating payments', () => {
     it('queries the Paying Accounts', async () => {
-      base.getTable = _mocked.getTable;
       await generator.generatePayments(new Date())
         
       expect(_mocked.getTable).toHaveBeenCalledWith("Accounts")
