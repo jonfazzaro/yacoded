@@ -29,9 +29,13 @@ describe("The payment generator", () => {
   });
 
   describe("when querying the last payment date", () => {
-    it("queries the Payments table", async () => {
+    let result;
+    beforeEach(async () => {
       base.getTable = _mocked.getTable;
-      const result = await generator.latestPaymentDate();
+      result = await generator.latestPaymentDate();
+    });
+
+    it("queries the Payments table", async () => {
       expect(base.getTable).toHaveBeenCalledWith("Payments");
       expect(result.toLocaleDateString()).toEqual("11/14/2001");
     });
