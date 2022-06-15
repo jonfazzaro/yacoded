@@ -24,12 +24,12 @@ async function latestPaymentDate() {
 
 async function generatePayments(date) {
   let results = await queryPayingAccounts();
-  let created = await create(payments(results, date))
+  let created = await create(payments(results.records, date))
   output.markdown(`Created ${created.length} of ${payments.length} payments.`);
 }
 
-function payments(results, date) {
-    return results.records
+function payments(accounts, date) {
+    return accounts
         .filter(outZeroDollarPayments)
         .map(toPaymentsOn(date));
 }
