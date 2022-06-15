@@ -36,7 +36,7 @@ describe("The payment generator", () => {
     });
 
     it("queries the Payments table", () => {
-      expect(base.getTable).toHaveBeenCalledWith("Payments");
+      expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
     });
 
     it("requests the Date field", () => {
