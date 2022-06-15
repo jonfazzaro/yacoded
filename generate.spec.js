@@ -70,6 +70,11 @@ describe("The payment generator", () => {
 
   describe("when generating payments", () => {
     beforeEach(async () => {
+        const hospitalPayment = {getCellValue:jest.fn(() => 25.19)}
+        const doctorPayment = {getCellValue:jest.fn(() => 0.0)}
+        _mocked.records = [
+            {}
+        ]
       await generator.generatePayments(new Date());
     });
     it("queries the Paying Accounts", () => {
@@ -81,6 +86,11 @@ describe("The payment generator", () => {
       expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(
         expect.objectContaining({ fields: [" Payment "], })
       );
+    });
+
+    it('filter out accounts set to pay nothing', () => {
+
+        
     });
   });
 });
