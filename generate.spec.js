@@ -95,22 +95,7 @@ describe("The payment generator", () => {
     it("creates Payments", () => {
       expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
       expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
-        expect.arrayContaining([
-          {
-            fields: {
-              Date: _mocked.today,
-              Amount: 25.19,
-              Account: [{ id: 3 }],
-            },
-          },
-          {
-            fields: {
-              Date: _mocked.today,
-              Amount: 20.0,
-              Account: [{ id: 4 }],
-            },
-          },
-        ])
+        expect.arrayContaining(_expected.payments)
       );
     });
 
@@ -141,6 +126,25 @@ const _mocked = {
 const hospitalPayment = { id: 3, getCellValue: jest.fn(() => 25.19) };
 const doctorPayment = { id: 4, getCellValue: jest.fn(() => 20.0) };
 const dentistPayment = { id: 7, getCellValue: jest.fn(() => 0.0) };
+
+const _expected = { 
+    payments: [
+        {
+          fields: {
+            Date: _mocked.today,
+            Amount: 25.19,
+            Account: [{ id: 3 }],
+          },
+        },
+        {
+          fields: {
+            Date: _mocked.today,
+            Amount: 20.0,
+            Account: [{ id: 4 }],
+          },
+        },
+      ]
+}
 
 _mocked.selectRecordsAsync = jest.fn(() =>
   Promise.resolve({ records: _mocked.records })
