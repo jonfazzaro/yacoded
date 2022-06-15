@@ -99,7 +99,6 @@ describe("The payment generator", () => {
 
     it("creates Payments", () => {
       expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
-
       expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
         expect.arrayContaining([
           {
@@ -118,7 +117,9 @@ describe("The payment generator", () => {
           },
         ])
       );
+    });
 
+    it('does not create zero dollar payments', () => {
       expect(_mocked.createRecordsAsync).not.toHaveBeenCalledWith(
         expect.arrayContaining([
           {
@@ -130,6 +131,7 @@ describe("The payment generator", () => {
           },
         ])
       );
+
     });
   });
 });
