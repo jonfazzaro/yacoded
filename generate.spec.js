@@ -40,10 +40,10 @@ describe("The payment generator", () => {
 jest.mock("./base", () => ({
   getTable: jest.fn(() => ({
     selectRecordsAsync: jest.fn(() =>
-      Promise.resolve({
+    Promise.resolve({
         records: [
             { getCellValue: jest.fn(() => "11/14/2001") },
         ],
       })),
-  })),
+  }))
 }));
