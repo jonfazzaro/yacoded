@@ -47,7 +47,10 @@ describe("The payment generator", () => {
 
     it("sorts descending by Date", () => {
       expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(
-        expect.objectContaining({ sorts: [{field: "Date", direction: "desc"}]})
+        expect.objectContaining({ sorts: [{
+            field: "Date", 
+            direction: "desc"
+        }]})
       );
     });
 
