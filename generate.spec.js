@@ -93,6 +93,7 @@ describe("The payment generator", () => {
         _mocked.records.forEach(r => {
             expect(r.getCellValue).toHaveBeenCalledWith(" Payment ")
         })
+        expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
 
       expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
         expect.arrayContaining([
