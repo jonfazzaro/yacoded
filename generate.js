@@ -12,10 +12,6 @@ async function latestPaymentDate() {
   return date(query.records[0]);
 }
 
-function date(payment) {
-    return new Date(payment.getCellValue("Date"))
-}
-
 async function generatePayments(date) {
   let accounts = await base
     .getTable("Accounts")
@@ -41,6 +37,10 @@ function addMonths(date, months) {
     date.setDate(0);
   }
   return date;
+}
+
+function date(payment) {
+    return new Date(payment.getCellValue("Date"))
 }
 
 const byDateDescending = {
