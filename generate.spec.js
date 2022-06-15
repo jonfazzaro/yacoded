@@ -40,7 +40,8 @@ describe("The payment generator", () => {
     });
 
     it('requests the Date field', () => {
-        expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(expect.objectContaining({ fields: ["Date"]}))
+        expect(_mocked.selectRecordsAsync)
+            .toHaveBeenCalledWith(expect.objectContaining({ fields: ["Date"]}))
         
     });
 
