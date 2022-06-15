@@ -1,4 +1,6 @@
-const base = {};
+const base = {
+    getTable: jest.fn()
+};
 const generator = require("./generate");
 
 describe("The payment generator", () => {
