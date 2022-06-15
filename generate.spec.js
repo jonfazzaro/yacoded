@@ -39,6 +39,11 @@ describe("The payment generator", () => {
       expect(base.getTable).toHaveBeenCalledWith("Payments");
     });
 
+    it('requests the Date field', () => {
+        expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(expect.objectContaining({ fields: ["Date"]}))
+        
+    });
+
     it('returns the date of the first record', () => {
       expect(result.toLocaleDateString()).toEqual("11/14/2001");
     });
