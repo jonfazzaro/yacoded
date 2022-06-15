@@ -1,19 +1,8 @@
-output.markdown('# Payments');
-
-let latest = await latestPaymentDate()
-
-output.markdown(`Payments were recorded last on ${latest.toLocaleDateString()}.`)
-
-let generate = await input.buttonsAsync("Would you like to generate payments for the next month?", ["Yes", "No"])
-if (generate == "Yes") {
-    let date = addMonths(latest, 1)
-    output.markdown(`Adding payments for ${date.toLocaleDateString()}...`)
-    await generatePayments(date)
+module.exports = {
+    latestPaymentDate,
+    generatePayments,
+    addMonths
 }
-
-output.markdown("Have a nice day!")
-
-//////
 
 async function latestPaymentDate() {
 
@@ -49,8 +38,8 @@ async function generatePayments(date) {
 function addMonths(date, months) {
     var d = date.getDate();
     date.setMonth(date.getMonth() + +months);
-    if (date.getDate() != d) {
-        date.setDate(0);
-    }
+    // if (date.getDate() != d) {
+    //     date.setDate(0);
+    // }
     return date;
 }
