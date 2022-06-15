@@ -7,9 +7,12 @@ module.exports = {
 };
 
 async function latestPaymentDate() {
-  let query = await base.getTable("Payments").selectRecordsAsync(byDateDescending);
+  let results = await base.getTable("Payments").selectRecordsAsync(byDateDescending);
+  return date(results.records[0]);
+}
 
-  return new Date(query.records[0].getCellValue("Date"));
+function date(payment) {
+    return new Date(payment.getCellValue("Date"))
 }
 
 async function generatePayments(date) {
