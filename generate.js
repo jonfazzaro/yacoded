@@ -34,9 +34,9 @@ async function generatePayments(date) {
       },
     }));
   let created = await base
-    .getTable
-    //"Payments"
-    ()
+    .getTable(
+    "Payments"
+    )
     .createRecordsAsync(payments);
   //   output.markdown(`Created ${created.length} of ${payments.length} payments.`);
 }
