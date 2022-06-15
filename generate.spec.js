@@ -8,6 +8,7 @@ describe("The payment generator", () => {
       const hence = generator.addMonths(today, 2);
       expect(_months[hence.getMonth()]).toEqual("December");
       expect(hence.getYear() + 1900).toEqual(2015);
+      expect(hence).toEqual(new Date("12/23/2015"))
     });
   });
 
