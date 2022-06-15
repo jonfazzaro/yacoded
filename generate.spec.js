@@ -1,8 +1,4 @@
-const base = {
-    getTable: jest.fn(() => Promise.resolve({
-        selectRecordsAsync: jest.fn()
-    }))
-};
+const base = require("./base");
 const generator = require("./generate");
 
 describe("The payment generator", () => {
@@ -32,9 +28,20 @@ describe("The payment generator", () => {
     }
   });
 
-
-  describe('when querying the last payment date', () => {
-
-    
+  describe("when querying the last payment date", () => {
+    it("queries the Payments table", async () => {
+      const result = await generator.latestPaymentDate();
+    });
   });
 });
+
+jest.mock("./base", () => ({
+  getTable: () => ({
+    selectRecordsAsync: () =>
+      Promise.resolve({
+        records: [
+            { getCellValue: jest.fn(() => "11/14/1977") },
+        ],
+      }),
+  }),
+}));

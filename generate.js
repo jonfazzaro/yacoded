@@ -1,3 +1,5 @@
+const base = require("./base")
+
 module.exports = {
     latestPaymentDate,
     generatePayments,
