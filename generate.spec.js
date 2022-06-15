@@ -102,13 +102,7 @@ describe("The payment generator", () => {
     it("does not create zero dollar payments", () => {
       expect(_mocked.createRecordsAsync).not.toHaveBeenCalledWith(
         expect.arrayContaining([
-          {
-            fields: {
-              Date: _mocked.today,
-              Amount: 0,
-              Account: [{ id: 7 }],
-            },
-          },
+          _expected.zeroDollarPayment
         ])
       );
     });
@@ -143,7 +137,14 @@ const _expected = {
             Account: [{ id: 4 }],
           },
         },
-      ]
+      ],
+      zeroDollarPayment: {
+        fields: {
+          Date: _mocked.today,
+          Amount: 0,
+          Account: [{ id: 7 }],
+        },
+      }
 }
 
 _mocked.selectRecordsAsync = jest.fn(() =>
