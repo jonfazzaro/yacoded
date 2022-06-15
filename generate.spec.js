@@ -14,7 +14,7 @@ describe("The payment generator", () => {
   });
 
   describe("given the target date is at the end of February", () => {
-    it("still returns a date in the next month", () => {
+    it("still lands in February", () => {
       expectDateWhenAddingMonthsTo("1/31/2021", 1, "2/28/2021");
     });
   });
