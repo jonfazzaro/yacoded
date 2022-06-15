@@ -16,12 +16,12 @@ function addMonths(date, months) {
   return date;
 }
 
-const byDateDescending = {
-  fields: ["Date"],
-  sorts: [{ field: "Date", direction: "desc" }],
-};
-
 async function latestPaymentDate() {
+  const byDateDescending = {
+    fields: ["Date"],
+    sorts: [{ field: "Date", direction: "desc" }],
+  };
+
   const query = await base
     .getTable("Payments")
     .selectRecordsAsync(byDateDescending);
