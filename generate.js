@@ -28,9 +28,7 @@ async function generatePayments(date) {
     .map(account => ({
       fields: {
         Date: date,
-        Amount: account.getCellValue(
-            " Payment "
-            ),
+        Amount: account.getCellValue( " Payment "),
 //         Account: [{ id: account.id }],
       },
     }));
