@@ -69,12 +69,13 @@ describe("The payment generator", () => {
   });
 
   describe("when generating payments", () => {
+    const date = new Date();
     beforeEach(async () => {
       const hospitalPayment = { getCellValue: jest.fn(() => 25.19) };
       const doctorPayment = { getCellValue: jest.fn(() => 20.0) };
       const dentistPayment = { getCellValue: jest.fn(() => 0.0) };
       _mocked.records = [hospitalPayment, doctorPayment, dentistPayment];
-      await generator.generatePayments(new Date());
+      await generator.generatePayments(date);
     });
 
     it("queries the Paying Accounts", () => {
@@ -89,8 +90,13 @@ describe("The payment generator", () => {
     });
 
     it("creates Payments", () => {
-        expect()
-
+      expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
+        expect.arrayContaining([{
+          fields: {
+            Date: date,
+          },
+        }])
+      );
     });
   });
 });
@@ -106,9 +112,7 @@ _mocked.selectRecordsAsync = jest.fn(() =>
   Promise.resolve({ records: _mocked.records })
 );
 
-_mocked.createRecordsAsync = jest.fn(() =>
-  Promise.resolve([1,2,3])
-);
+_mocked.createRecordsAsync = jest.fn(() => Promise.resolve([1, 2, 3]));
 
 _mocked.getView = jest.fn();
 
