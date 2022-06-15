@@ -2,7 +2,7 @@ const generator = require("./generate");
 
 describe("The payment generator", () => {
   describe("given a date before November", () => {
-    it("adds months", () => {
+    it("adds months in the same year", () => {
       const today = new Date(2015, _months.indexOf("October"), 23);
       const hence = generator.addMonths(today, 2);
       expect(_months[hence.getMonth()]).toEqual("December");
