@@ -33,11 +33,7 @@ async function generatePayments(date) {
         Account: [{ id: account.id }],
       },
     }));
-  let created = await base
-    .getTable(
-    "Payments"
-    )
-    .createRecordsAsync(payments);
+  let created = await base.getTable("Payments").createRecordsAsync(payments);
   //   output.markdown(`Created ${created.length} of ${payments.length} payments.`);
 }
 
@@ -53,7 +49,7 @@ function date(payment) {
 }
 
 function paymentAmount(account) {
-    return account.getCellValue(" Payment ")
+  return account.getCellValue(" Payment ");
 }
 
 const byDateDescending = {
