@@ -10,9 +10,8 @@ module.exports = {
 function addMonths(date, months) {
   var d = date.getDate();
   date.setMonth(date.getMonth() + +months);
-  if (date.getDate() != d) 
-    date.setDate(0);
-  
+  if (date.getDate() != d) date.setDate(0);
+
   return date;
 }
 
@@ -25,21 +24,23 @@ async function latestPaymentDate() {
 
 async function generatePayments(date) {
   let results = await queryPayingAccounts();
-  let payments = results.records
-    .filter(outZeroDollarPayments)
-    .map(account => ({
-      fields: {
-        Date: date,
-        Amount: paymentAmount(account),
-        Account: [{ id: account.id }],
-      },
-    }));
+  let payments = results.records.filter(outZeroDollarPayments).map(toPaymentsOn(date));
   let created = await base.getTable("Payments").createRecordsAsync(payments);
-    output.markdown(`Created ${created.length} of ${payments.length} payments.`);
+  output.markdown(`Created ${created.length} of ${payments.length} payments.`);
 }
 
 function outZeroDollarPayments(account) {
-    return 0 < paymentAmount(account)
+  return 0 < paymentAmount(account);
+}
+
+function toPaymentsOn(date) {
+  return account => ({
+    fields: {
+      Date: date,
+      Amount: paymentAmount(account),
+      Account: [{ id: account.id }],
+    },
+  });
 }
 
 async function queryPayingAccounts() {
