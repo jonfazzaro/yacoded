@@ -2,9 +2,9 @@ const base = require("./base");
 const generator = require("./generate");
 
 describe("The payment generator", () => {
-    beforeEach(() => {
-      base.getTable = _mocked.getTable;
-    });
+  beforeEach(() => {
+    base.getTable = _mocked.getTable;
+  });
   describe("when adding months", () => {
     describe("given a date in the middle of the year", () => {
       it("adds months in the same year", () => {
@@ -49,28 +49,36 @@ describe("The payment generator", () => {
 
     it("sorts descending by Date", () => {
       expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(
-        expect.objectContaining({ sorts: [{
-            field: "Date", 
-            direction: "desc"
-        }]})
+        expect.objectContaining({
+          sorts: [
+            {
+              field: "Date",
+              direction: "desc",
+            },
+          ],
+        })
       );
     });
 
     it("returns the date of the first record", () => {
-        expect(_mocked.record.getCellValue).toHaveBeenCalledWith("Date")
+      expect(_mocked.record.getCellValue).toHaveBeenCalledWith("Date");
       expect(result.toLocaleDateString()).toEqual("11/14/2001");
     });
   });
 
-  describe('when generating payments', () => {
-    beforeEach(async() => {
-      await generator.generatePayments(new Date())
+  describe("when generating payments", () => {
+    beforeEach(async () => {
+      await generator.generatePayments(new Date());
     });
-    it('queries the Paying Accounts', () => {
-      expect(_mocked.getTable).toHaveBeenCalledWith("Accounts")
-      expect(_mocked.getView).toHaveBeenCalledWith("Paying")
+    it("queries the Paying Accounts", () => {
+      expect(_mocked.getTable).toHaveBeenCalledWith("Accounts");
+      expect(_mocked.getView).toHaveBeenCalledWith("Paying");
     });
-    
+
+    it('requests the Payment field', () => {
+        expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(expect.objectContaining({ fields: [" Payment "]}))
+        
+    });
   });
 });
 
@@ -84,11 +92,11 @@ _mocked.selectRecordsAsync = jest.fn(() =>
   Promise.resolve({ records: [_mocked.record] })
 );
 
-_mocked.getView = jest.fn()
+_mocked.getView = jest.fn();
 
 _mocked.getTable = jest.fn(() => ({
   selectRecordsAsync: _mocked.selectRecordsAsync,
-  getView: _mocked.getView
+  getView: _mocked.getView,
 }));
 
-_mocked.getView.mockImplementation(_mocked.getTable)
+_mocked.getView.mockImplementation(_mocked.getTable);
