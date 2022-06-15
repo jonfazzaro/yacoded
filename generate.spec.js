@@ -66,6 +66,7 @@ describe("The payment generator", () => {
       await generator.generatePayments(new Date())
         
       expect(_mocked.getTable).toHaveBeenCalledWith("Accounts")
+      expect(_mocked.getView).toHaveBeenCalledWith("Paying")
     });
     
   });
@@ -81,7 +82,11 @@ _mocked.selectRecordsAsync = jest.fn(() =>
   Promise.resolve({ records: [_mocked.record] })
 );
 
+_mocked.getView = jest.fn()
+
 _mocked.getTable = jest.fn(() => ({
   selectRecordsAsync: _mocked.selectRecordsAsync,
-  getView: _mocked.getTable
+  getView: _mocked.getView
 }));
+
+_mocked.getView.mockImplementation(_mocked.getTable)
