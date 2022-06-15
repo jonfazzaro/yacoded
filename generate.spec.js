@@ -4,9 +4,6 @@ describe("The payment generator", () => {
   describe("given a date before November", () => {
     it("adds months in the same year", () => {
         expectDateWhenAddingMonthsTo("10/23/2015", 2, "12/23/2015")
-      expect(generator.addMonths(new Date("10/23/2015"), 2)).toEqual(
-        new Date("12/23/2015")
-      );
     });
   });
 
