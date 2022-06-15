@@ -1,5 +1,7 @@
 const base = {
-    getTable: jest.fn()
+    getTable: jest.fn(() => Promise.resolve({
+        selectRecordsAsync: jest.fn()
+    }))
 };
 const generator = require("./generate");
 
