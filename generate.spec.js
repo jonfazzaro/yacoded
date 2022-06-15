@@ -1,3 +1,4 @@
+const base = {};
 const generator = require("./generate");
 
 describe("The payment generator", () => {
@@ -29,7 +30,7 @@ describe("The payment generator", () => {
 
 
   describe('when querying the last payment date', () => {
-    
+
     
   });
 });
