@@ -22,10 +22,7 @@ async function latestPaymentDate() {
 }
 
 async function generatePayments(date) {
-  let accounts = await base
-    .getTable("Accounts")
-    .getView("Paying")
-    .selectRecordsAsync({ fields: [" Payment "] });
+  let accounts = await queryPayingAccounts();
 //   let payments = accounts.records
 //     .filter(account => 0 < account.getCellValue(" Payment "))
 //     .map(account => ({
@@ -37,6 +34,13 @@ async function generatePayments(date) {
 //     }));
 //   let created = await base.getTable("Payments").createRecordsAsync(payments);
 //   output.markdown(`Created ${created.length} of ${payments.length} payments.`);
+}
+
+async function queryPayingAccounts() {
+    return await base
+    .getTable("Accounts")
+    .getView("Paying")
+    .selectRecordsAsync({ fields: [" Payment "] });
 }
 
 function date(payment) {
