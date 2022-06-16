@@ -2,7 +2,7 @@ const subject = require("./payeeCode");
 const alert = require("../alert");
 const setTimeout = require("../setTimeout");
 jest.mock("../alert", () => jest.fn());
-jest.mock("../setTimeout", () => jest.fn());
+jest.mock("../setTimeout", () => jest.fn(fn => fn()));
 
 describe("The payee code generator", () => {
   let js, document;
