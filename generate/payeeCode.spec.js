@@ -60,6 +60,7 @@ describe('The payment record parser', () => {
         const data = subject.parse(new record("Maynard", "666", "777 Vine Yard\nArizona Bay, AZ 78901"))
         expect(data.payee).toEqual("Maynard")
         expect(data.accountNumber).toEqual("666")
+        expect(data.address.line1).toEqual("777 Vine Yard")
     });
     
     function record(payee, account, address) {
