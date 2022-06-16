@@ -9,10 +9,10 @@ describe("The payee code generator", () => {
   beforeEach(async () => {
     alert.mockClear();
     setTimeout.mockImplementation(fn => fn());
-    document = _mocked.document;
     _mocked.document.querySelector.mockReturnValue(_mocked.element);
     _mocked.document.getElementById.mockImplementation(id => _mocked.form[id]);
     _mocked.element.click.mockClear();
+    document = _mocked.document;
     js = await eval(subject.code(_mocked.payment));
   });
 
