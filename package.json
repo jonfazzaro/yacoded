@@ -1,8 +1,7 @@
 {
-  "name": "pennydrop",
+  "name": "cleanbill",
   "version": "1.0.0",
   "description": "",
-  "main": "generate.js",
   "scripts": {
     "test": "npx jest",
     "tdd": "npx jest --watchAll",
