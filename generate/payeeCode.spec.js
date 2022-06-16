@@ -7,7 +7,6 @@ jest.mock("../setTimeout", () => jest.fn(fn => fn()));
 describe("The payee code generator", () => {
   let js, document;
   beforeEach(async () => {
-    // alert.mockClear();
     arrangeDocument();
     document = _mocked.document;
     js = await eval(subject.code(_mocked.payment));
