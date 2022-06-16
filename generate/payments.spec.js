@@ -1,6 +1,9 @@
-const base = require("./base");
-const output = require("./output");
-const generator = require("./generate");
+jest.mock("../base");
+jest.mock("../output");
+
+const base = require("../base");
+const output = require("../output");
+const generator = require("./payments");
 
 describe("The payment generator", () => {
   beforeEach(() => {
@@ -112,9 +115,6 @@ describe("The payment generator", () => {
     });
   });
 });
-
-jest.mock("./base");
-jest.mock("./output");
 
 const _mocked = {
   records: [],

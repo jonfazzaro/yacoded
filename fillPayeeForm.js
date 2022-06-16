@@ -1,4 +1,3 @@
-(() => {
   const payee = {
     CompanyName: "KeyBridge",
     AccountNumber: "K268380",
@@ -54,4 +53,3 @@
       setTimeout(resolve, count * 1000);
     });
   }
-})();
