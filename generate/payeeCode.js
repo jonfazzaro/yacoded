@@ -1,8 +1,9 @@
-const output = require("../output");
+const output = require("../stubs/output");
 
 module.exports = {
   code,
   parse,
+  show
 };
 
 ////////////////////////////////

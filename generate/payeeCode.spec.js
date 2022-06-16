@@ -1,8 +1,8 @@
 const subject = require("./payeeCode");
-const alert = require("../alert");
-const setTimeout = require("../setTimeout");
-jest.mock("../alert", () => jest.fn());
-jest.mock("../setTimeout", () => jest.fn(fn => fn()));
+const alert = require("../stubs/alert");
+const setTimeout = require("../stubs/setTimeout");
+jest.mock("../stubs/alert", () => jest.fn());
+jest.mock("../stubs/setTimeout", () => jest.fn(fn => fn()));
 
 describe("The generated payee code", () => {
   let js, document;

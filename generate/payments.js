@@ -1,5 +1,5 @@
-const base = require("../base");
-const output = require("../output");
+const base = require("../stubs/base");
+const output = require("../stubs/output");
 
 module.exports = {
   latestPaymentDate,

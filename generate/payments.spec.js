@@ -1,9 +1,9 @@
-jest.mock("../base");
-jest.mock("../output");
+jest.mock("../stubs/base");
+jest.mock("../stubs/output");
 
-const base = require("../base");
-const output = require("../output");
-const generator = require("./payments");
+const base = require("../stubs/base");
+const output = require("../stubs/output");
+const subject = require("./payments");
 
 describe("The payment generator", () => {
   beforeEach(() => {
@@ -31,7 +31,7 @@ describe("The payment generator", () => {
     });
 
     function expectDateWhenAddingMonthsTo(date, months, expected) {
-      expect(generator.addMonths(new Date(date), months)).toEqual(
+      expect(subject.addMonths(new Date(date), months)).toEqual(
         new Date(expected)
       );
     }
@@ -42,7 +42,7 @@ describe("The payment generator", () => {
     beforeEach(async () => {
       _mocked.paymentRecord.getCellValue.mockReturnValue("11/14/2001");
       _mocked.records = [_mocked.paymentRecord];
-      result = await generator.latestPaymentDate();
+      result = await subject.latestPaymentDate();
     });
 
     it("queries the Payments table", () => {
@@ -77,7 +77,7 @@ describe("The payment generator", () => {
   describe("when generating payments", () => {
     beforeEach(async () => {
       _mocked.records = [hospitalPayment, doctorPayment, dentistPayment];
-      await generator.generatePayments(_mocked.today);
+      await subject.generatePayments(_mocked.today);
     });
 
     it("queries the Paying Accounts", () => {
