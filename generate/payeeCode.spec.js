@@ -60,25 +60,23 @@ describe("The payment record parser", () => {
     const data = subject.parse(
       new record("Maynard", "666", "777 Vine Yard\nArizona Bay, AZ 78901")
     );
-    expect(data).toEqual(
-      {
-        payee: "Maynard",
-        accountNumber: "666",
-        address: {
-          line1: "777 Vine Yard",
-          line2: null,
-          city: "Arizona Bay",
-          state: "AZ",
-          zip5: "78901",
-          zip4: null,
-          phone: {
-            area: null,
-            exchange: null,
-            last: null,
-          },
+    expect(data).toEqual({
+      payee: "Maynard",
+      accountNumber: "666",
+      address: {
+        line1: "777 Vine Yard",
+        line2: null,
+        city: "Arizona Bay",
+        state: "AZ",
+        zip5: "78901",
+        zip4: null,
+        phone: {
+          area: null,
+          exchange: null,
+          last: null,
         },
-      }
-    );
+      },
+    });
   });
 
   function record(payee, account, address) {
