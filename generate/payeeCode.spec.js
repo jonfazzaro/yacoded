@@ -102,7 +102,7 @@ describe("The payment record parser", () => {
     });
   });
 
-  it("maps a less straitforward address", () => {
+  it("maps an address with a phone number", () => {
     const data = subject.parse(
       new record("Danny", "88", "789 Five Street\nAttn: Cobham Stans\nKansas City, MO 75989-1239")
     );
