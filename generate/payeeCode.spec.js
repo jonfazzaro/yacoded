@@ -79,7 +79,7 @@ describe("The payment record parser", () => {
     });
   });
 
-  it("maps a less straitforward address", () => {
+  it("maps a less straightforward address", () => {
     const data = subject.parse(
       new record("Justin", "4", "789 Peach Lane\nBuckets of Blood\nHaverford-on-Trentshire, UK 00000-1234")
     );
