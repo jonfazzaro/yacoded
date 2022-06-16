@@ -104,7 +104,7 @@ describe("The payment record parser", () => {
 
   it("maps an address with a phone number", () => {
     const data = subject.parse(
-      new record("Danny", "88", "789 Five Street\nAttn: Cobham Stans\nKansas City, MO 75989-1239")
+      new record("Danny", "88", "789 Five Street\nAttn: Cobham Stans\nKansas City, MO 75989-1239\n987-765-3647")
     );
     expect(data).toEqual({
       payee: "Danny",
@@ -117,9 +117,9 @@ describe("The payment record parser", () => {
         zip5: "75989",
         zip4: "1239",
         phone: {
-          area: null,
-          exchange: null,
-          last: null,
+          area: "987",
+          exchange: "765",
+          last: "3647",
         },
       },
     });
