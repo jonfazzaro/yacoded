@@ -59,6 +59,12 @@ describe("The payee code generator", () => {
   });
 });
 
+function arrangeDocument() {
+    _mocked.document.querySelector.mockReturnValue(_mocked.element);
+    _mocked.document.getElementById.mockImplementation(id => _mocked.form[id]);
+    _mocked.element.click.mockClear(); 
+}
+
 function expectFormValue(field, value) {
   expect(_mocked.form[field].value).toEqual(value);
 }
