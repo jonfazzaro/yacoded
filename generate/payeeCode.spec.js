@@ -61,7 +61,7 @@ describe("The payment record parser", () => {
       new record("Maynard", "666", "777 Vine Yard\nArizona Bay, AZ 78901")
     );
     expect(data).toEqual(
-      expect.objectContaining({
+      {
         payee: "Maynard",
         accountNumber: "666",
         address: {
@@ -77,7 +77,7 @@ describe("The payment record parser", () => {
             last: null,
           },
         },
-      })
+      }
     );
   });
 
