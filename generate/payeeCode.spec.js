@@ -79,6 +79,29 @@ describe("The payment record parser", () => {
     });
   });
 
+  it("maps a less straitforward address", () => {
+    const data = subject.parse(
+      new record("Justin", "4", "789 Peach Lane\nBuckets of Blood\nHaverford-on-Trentshire, UK 00000-1234")
+    );
+    expect(data).toEqual({
+      payee: "Justin",
+      accountNumber: "4",
+      address: {
+        line1: "789 Peach Lane",
+        line2: "Buckets of Blood",
+        city: "Haverford-on-Trentshire",
+        state: "UK",
+        zip5: "00000",
+        zip4: "1234",
+        phone: {
+          area: null,
+          exchange: null,
+          last: null,
+        },
+      },
+    });
+  });
+
   function record(payee, account, address) {
     const data = {
       Payee: payee,
