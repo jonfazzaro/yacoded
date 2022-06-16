@@ -1,6 +1,4 @@
 const output = require("../output");
-// const alert = require("../alert");
-// const setTimeout = require("../setTimeout");
 
 module.exports = {
   code,
