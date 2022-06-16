@@ -55,34 +55,47 @@ describe("The generated payee code", () => {
   });
 });
 
-describe('The payment record parser', () => {
-    it('maps a simple address', () => {
-        const data = subject.parse(new record("Maynard", "666", "777 Vine Yard\nArizona Bay, AZ 78901"))
-        expect(data.payee).toEqual("Maynard")
-        expect(data.accountNumber).toEqual("666")
-        expect(data.address.line1).toEqual("777 Vine Yard")
-        expect(data.address.line2).toBeNull()
-        expect(data.address.city).toEqual("Arizona Bay")
-        expect(data.address.state).toEqual("AZ")
-        expect(data.address.zip5).toEqual("78901")
-        expect(data.address.zip4).toBeNull()
-    });
-    
-    function record(payee, account, address) {
-        const data = {
-            "Payee": payee,
-            "Account Number": account,
-            "Address": [address]
-        }
-        data.getCellValue = key => data[key]
-        return data
-    }
+describe("The payment record parser", () => {
+  it("maps a simple address", () => {
+    const data = subject.parse(
+      new record("Maynard", "666", "777 Vine Yard\nArizona Bay, AZ 78901")
+    );
+    expect(data).toEqual(
+      expect.objectContaining({
+        payee: "Maynard",
+        accountNumber: "666",
+        address: {
+          line1: "777 Vine Yard",
+          line2: null,
+          city: "Arizona Bay",
+          state: "AZ",
+          zip5: "78901",
+          zip4: null,
+          phone: {
+            area: null,
+            exchange: null,
+            last: null,
+          },
+        },
+      })
+    );
+  });
+
+  function record(payee, account, address) {
+    const data = {
+      Payee: payee,
+      "Account Number": account,
+      Address: [address],
+    };
+    data.getCellValue = key => data[key];
+    return data;
+  }
 });
 
 function arrangeDocument() {
-    _mocked.document.querySelector.mockReturnValue(_mocked.element);
-    _mocked.document.getElementById.mockImplementation(id => _mocked.form[id]);
-    _mocked.element.click.mockClear(); 
+  _mocked.document.querySelector.mockReturnValue(_mocked.element);
+  _mocked.document.getElementById.mockImplementation(id => _mocked.form[id]);
+  _mocked.element.click.mockClear();
 }
 
 function expectFormValue(field, value) {
