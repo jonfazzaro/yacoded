@@ -125,6 +125,29 @@ describe("The payment record parser", () => {
     });
   });
 
+  it("maps a simple address with a phone number", () => {
+    const data = subject.parse(
+      new record("Adam", "1991", "1 Simpson Court\nHollywood, CA 90211\n360-365-2345")
+    );
+    expect(data).toEqual({
+      payee: "Adam",
+      accountNumber: "1991",
+      address: {
+        line1: "1 Simpson Court",
+        line2: null,
+        city: "Hollywood",
+        state: "CA",
+        zip5: "90211",
+        zip4: null,
+        phone: {
+          area: "360",
+          exchange: "365",
+          last: "2345",
+        },
+      },
+    });
+  });
+
   function record(payee, account, address) {
     const data = {
       Payee: payee,
