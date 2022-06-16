@@ -12,7 +12,7 @@ describe("The generated payee code", () => {
     js = await eval(subject.code(_mocked.payment));
   });
 
-  it("evaluates the generated code", () => {
+  it("can be evaluated", () => {
     expect(typeof js.openAndFillForm).toEqual("function");
   });
 
