@@ -8,7 +8,6 @@ describe("The payee code generator", () => {
   let js, document;
   beforeEach(async () => {
     alert.mockClear();
-    setTimeout.mockImplementation(fn => fn());
     arrangeDocument();
     document = _mocked.document;
     js = await eval(subject.code(_mocked.payment));
