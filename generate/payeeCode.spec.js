@@ -55,6 +55,23 @@ describe("The generated payee code", () => {
   });
 });
 
+describe('The payment record parser', () => {
+    it('maps address line 1', () => {
+        const data = subject.parse(new record("Maynard", "666", "777 Vine Yard\nArizona Bay, AZ 78901"))
+        expect(data.payee).toEqual("Maynard")
+    });
+    
+    function record(payee, account, address) {
+        const data = {
+            "Payee": payee,
+            "Account Number": account,
+            "Address": [address]
+        }
+        data.getCellValue = key => data[key]
+        return data
+    }
+});
+
 function arrangeDocument() {
     _mocked.document.querySelector.mockReturnValue(_mocked.element);
     _mocked.document.getElementById.mockImplementation(id => _mocked.form[id]);
