@@ -56,7 +56,7 @@ describe("The generated payee code", () => {
 });
 
 describe('The payment record parser', () => {
-    it('maps address line 1', () => {
+    it('maps a simple address', () => {
         const data = subject.parse(new record("Maynard", "666", "777 Vine Yard\nArizona Bay, AZ 78901"))
         expect(data.payee).toEqual("Maynard")
     });
