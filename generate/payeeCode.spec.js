@@ -4,7 +4,7 @@ const setTimeout = require("../setTimeout");
 jest.mock("../alert", () => jest.fn());
 jest.mock("../setTimeout", () => jest.fn(fn => fn()));
 
-describe("The payee code generator", () => {
+describe("The generated payee code", () => {
   let js, document;
   beforeEach(async () => {
     arrangeDocument();
