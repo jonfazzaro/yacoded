@@ -30,11 +30,12 @@ function parse(record) {
 function parseAddress(address) {
     const meta = metadata(address)
 
+  const STATE = / ([A-Z]{2}) /;
     return {
         line1: meta.line1,
         line2: meta.line2,
         city: meta.cityStateZip.split(',')[0],
-        state: capture(meta.cityStateZip, / ([A-Z]{2}) /),
+        state: capture(meta.cityStateZip, STATE),
         zip5: capture(meta.cityStateZip, /([0-9]{5})/),
         zip4: capture(meta.cityStateZip, /-([0-9]{4})/),
         phone: parsePhone(meta.phoneNumber)
