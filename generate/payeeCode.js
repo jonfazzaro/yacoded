@@ -55,8 +55,8 @@ function parsePhone(phoneNumber) {
 function metadata(address) {
     const lines = address.split("\n")
     const lastLine = lines[lines.length - 1]
-    const cityStateZip = lastLine.match(/^[0-9]/) ? lines[lines.length - 2] : lastLine
     const phoneNumber = lastLine.match(/^[0-9]/) ? lastLine : null
+    const cityStateZip = phoneNumber ? lines[lines.length - 2] : lastLine
     const hasLine2 = lines.length > (phoneNumber ? 3 : 2)
 
     return {
