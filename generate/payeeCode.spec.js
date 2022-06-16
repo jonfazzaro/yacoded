@@ -102,6 +102,29 @@ describe("The payment record parser", () => {
     });
   });
 
+  it("maps a less straitforward address", () => {
+    const data = subject.parse(
+      new record("Danny", "88", "789 Five Street\nAttn: Cobham Stans\nKansas City, MO 75989-1239")
+    );
+    expect(data).toEqual({
+      payee: "Danny",
+      accountNumber: "88",
+      address: {
+        line1: "789 Five Street",
+        line2: "Attn: Cobham Stans",
+        city: "Kansas City",
+        state: "MO",
+        zip5: "75989",
+        zip4: "1239",
+        phone: {
+          area: null,
+          exchange: null,
+          last: null,
+        },
+      },
+    });
+  });
+
   function record(payee, account, address) {
     const data = {
       Payee: payee,
