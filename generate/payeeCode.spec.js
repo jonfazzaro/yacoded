@@ -62,6 +62,7 @@ describe('The payment record parser', () => {
         expect(data.accountNumber).toEqual("666")
         expect(data.address.line1).toEqual("777 Vine Yard")
         expect(data.address.line2).toBeNull()
+        expect(data.address.city).toEqual("Arizona Bay")
     });
     
     function record(payee, account, address) {
