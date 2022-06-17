@@ -85,15 +85,15 @@ describe("The payment generator", () => {
       expect(_mocked.getView).toHaveBeenCalledWith("Paying");
     });
 
-    it("requests the Payment field", () => {
+    it("specifies the fields", () => {
       expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(
-          expect.objectContaining({ fields: expect.arrayContaining([" Payment "]) })
+          expect.objectContaining({ fields: [" Payment ", "Payments Remaining"] })
       );
     });
 
     it("requests the Payments Remaining field", () => {
       expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(
-        expect.objectContaining({ fields: expect.arrayContaining(["Payments Remaining"]) })
+        expect.objectContaining({ fields: expect.arrayContaining([]) })
       );
     });
 
