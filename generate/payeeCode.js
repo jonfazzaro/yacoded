@@ -1,9 +1,9 @@
 const output = require("../stubs/output");
 
 module.exports = {
-  code,
-  parse,
-  show
+    code,
+    parse,
+    show
 };
 
 ////////////////////////////////
@@ -21,74 +21,79 @@ function show(snippet) {
 
 function parse(record) {
     return {
-        payee: record.getCellValue("Payee"),
-        accountNumber: record.getCellValue("Account Number"),
-        address: parseAddress(record.getCellValue("Address")[0])
+        payee: stripQuotes(record.getCellValue("Payee")),
+        accountNumber: first(record.getCellValue("Account Number")),
+        address: parseAddress(first(record.getCellValue("Address"))),
+        phone: parsePhone(first(record.getCellValue("Phone"))),
     }
 }
 
-function parseAddress(address) {
-    const meta = metadata(address)
+function first(list) {
+    return (list || [null])[0]
+}
 
-  const STATE = / ([A-Z]{2}) /;
+function stripQuotes(fromString) {
+    return fromString.replace(/"/g, "")
+}
+
+function parseAddress(address) {
+    const lines = address.split("\n")
+    const cityStateZip = lines[lines.length - 1];
+    const hasLine2 = lines.length > 2;
+
     return {
-        line1: meta.line1,
-        line2: meta.line2,
-        city: meta.cityStateZip.split(',')[0],
-        state: capture(meta.cityStateZip, STATE),
-        zip5: capture(meta.cityStateZip, /([0-9]{5})/),
-        zip4: capture(meta.cityStateZip, /-([0-9]{4})/),
-        phone: parsePhone(meta.phoneNumber)
+        line1: first(lines),
+        line2: hasLine2 ? lines[1] : null,
+        city: first(cityStateZip.split(',')),
+        state: first(capture(cityStateZip, rex().state)),
+        zip5: first(capture(cityStateZip, rex().zip5)),
+        zip4: first(capture(cityStateZip, rex().zip4)),
     }
 }
 
 function parsePhone(phoneNumber) {
-    const phoneNumberParts = phoneNumber ? phoneNumber.split("-") : [null, null, null]
+    const parts = capture(phoneNumber, rex().phone, 3)
 
     return {
-        area: phoneNumberParts[0],
-        exchange: phoneNumberParts[1],
-        last: phoneNumberParts[2],
+        area: parts[0],
+        exchange: parts[1],
+        last: parts[2],
     }
 }
 
-function metadata(address) {
-    const lines = address.split("\n")
-    const lastLine = lines[lines.length - 1]
-    const phoneNumber = lastLine.match(/^[0-9]/) ? lastLine : null
-    const cityStateZip = phoneNumber ? lines[lines.length - 2] : lastLine
-    const hasLine2 = lines.length > (phoneNumber ? 3 : 2)
+function capture(fromString, expression, count = 1) {
+    const match = (fromString || "").match(expression)
+    return match ? match.slice(1, count + 1) : Array(count).fill(null);
+}
 
+function rex() {
     return {
-        line1: lines[0],
-        line2: hasLine2 ? lines[1] : null,
-        cityStateZip,
-        phoneNumber
+        phone: /\((\d{3})\) (\d{3})-(\d{4})/,
+        state: / ([A-Z]{2}) /,
+        zip5: /(\d{5})/,
+        zip4: /-(\d{4})/,
     }
 }
 
-function capture(fromString, expression) {
-    const match = fromString.match(expression)
-    if (match)
-        return match[1];
-    return null
+function mapToForm(data) {
+    return {
+        CompanyName: data.payee,
+        AccountNumber: data.accountNumber,
+        AddressLine1: data.address.line1,
+        AddressLine2: data.address.line2,
+        City: data.address.city,
+        inputState: data.address.state,
+        Zip5: data.address.zip5,
+        Zip4: data.address.zip4,
+        inputPhone1: data.phone.area,
+        inputPhone2: data.phone.exchange,
+        inputPhone3: data.phone.last,
+    };
 }
 
 function code(data) {
     return `\n((document) => {
-  const payee = {
-    CompanyName: "${data.payee.replace(/"/g, "")}",
-    AccountNumber: "${data.accountNumber}",
-    AddressLine1: "${data.address.line1}",
-    AddressLine2: "${data.address.line2}",
-    City: "${data.address.city}",
-    inputState: "${data.address.state}",
-    Zip5: "${data.address.zip5}",
-    Zip4: "${data.address.zip4}",
-    inputPhone1: "${data.address.phone.area}",
-    inputPhone2: "${data.address.phone.exchange}",
-    inputPhone3: "${data.address.phone.last}",
-  };
+  const payee = ${JSON.stringify(mapToForm(data), null, '\t')}
 
   openAndFillForm(0.5);
   async function openAndFillForm(delay) {
@@ -134,6 +139,5 @@ function code(data) {
     payee,
     openAndFillForm
   }
-})(document);`.replaceAll('"null"', 'null')
+})(document);`
 }
-
