@@ -63,7 +63,7 @@ async function queryPayingAccounts() {
   return await base
     .getTable("Accounts")
     .getView("Paying")
-    .selectRecordsAsync({ fields: [" Payment "] });
+    .selectRecordsAsync({ fields: [" Payment ", "Payments Remaining"] });
 }
 
 function date(payment) {
