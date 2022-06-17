@@ -91,12 +91,6 @@ describe("The payment generator", () => {
       );
     });
 
-    it("reads the Payment field on each account", () => {
-      _mocked.records.forEach(r => {
-        expect(r.getCellValue).toHaveBeenCalledWith(" Payment ");
-      });
-    });
-
     it("creates Payments", () => {
       expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
       expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
@@ -122,9 +116,7 @@ const _mocked = {
   today: new Date("3/4/2005"),
 };
 
-const hospitalAccount = {
-  id: 3,
-  getCellValue: jest.fn(() => 25.19) };
+const hospitalAccount = record({ id: 3, " Payment ": 25.19 });
 const doctorAccount = { id: 4, getCellValue: jest.fn(() => 20.0) };
 const dentistAccount = { id: 7, getCellValue: jest.fn(() => 0.0) };
 
