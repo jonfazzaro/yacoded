@@ -9,6 +9,8 @@ module.exports = {
 
 ///
 
+"use strict";
+
 function addMonths(date, months) {
   const d = date.getDate();
   date.setMonth(date.getMonth() + +months);
