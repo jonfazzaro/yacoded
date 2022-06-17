@@ -117,8 +117,8 @@ const _mocked = {
 };
 
 const hospitalAccount = record({ id: 3, " Payment ": 25.19 });
-const doctorAccount = { id: 4, getCellValue: jest.fn(() => 20.0) };
-const dentistAccount = { id: 7, getCellValue: jest.fn(() => 0.0) };
+const doctorAccount = record({ id: 4, " Payment ": 20.0 });
+const dentistAccount = record({ id: 7, " Payment ": 0.0 });
 
 const _expected = { 
     payments: [
