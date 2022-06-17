@@ -76,7 +76,7 @@ describe("The payment generator", () => {
 
   describe("when generating payments", () => {
     beforeEach(async () => {
-      _mocked.records = [hospitalPayment, doctorPayment, dentistPayment];
+      _mocked.records = [hospitalAccount, doctorAccount, dentistAccount];
       await subject.generatePayments(_mocked.today);
     });
 
@@ -122,9 +122,11 @@ const _mocked = {
   today: new Date("3/4/2005"),
 };
 
-const hospitalPayment = { id: 3, getCellValue: jest.fn(() => 25.19) };
-const doctorPayment = { id: 4, getCellValue: jest.fn(() => 20.0) };
-const dentistPayment = { id: 7, getCellValue: jest.fn(() => 0.0) };
+const hospitalAccount = {
+  id: 3,
+  getCellValue: jest.fn(() => 25.19) };
+const doctorAccount = { id: 4, getCellValue: jest.fn(() => 20.0) };
+const dentistAccount = { id: 7, getCellValue: jest.fn(() => 0.0) };
 
 const _expected = { 
     payments: [
@@ -167,3 +169,8 @@ _mocked.getTable = jest.fn(() => ({
 }));
 
 _mocked.getView.mockImplementation(_mocked.getTable);
+
+function record(data) {
+  data.getCellValue = key => data[key];
+  return data;
+}
