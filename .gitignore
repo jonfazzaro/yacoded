@@ -168,3 +168,7 @@ dist
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,node
+.idea/.gitignore
+.idea/cleanbill.iml
+.idea/modules.xml
+.idea/vcs.xml
