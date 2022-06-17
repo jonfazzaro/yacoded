@@ -55,6 +55,7 @@ function toPaymentsOn(date) {
       Date: date,
       Amount: paymentAmount(account),
       Account: [{ id: account.id }],
+      "Payments Remaining": account.getCellValue("Payments Remaining")
     },
   });
 }

@@ -117,8 +117,8 @@ const _mocked = {
 };
 
 const hospitalAccount = record({ id: 3, " Payment ": 25.19, "Payments Remaining": 34 });
-const doctorAccount = record({ id: 4, " Payment ": 20.0 });
-const dentistAccount = record({ id: 7, " Payment ": 0.0 });
+const doctorAccount = record({ id: 4, " Payment ": 20.0, "Payments Remaining": 125 });
+const dentistAccount = record({ id: 7, " Payment ": 0.0, "Payments Remaining": 7 });
 
 const _expected = { 
     payments: [
@@ -127,6 +127,7 @@ const _expected = {
             Date: _mocked.today,
             Amount: 25.19,
             Account: [{ id: 3 }],
+            "Payments Remaining": 34
           },
         },
         {
@@ -134,6 +135,7 @@ const _expected = {
             Date: _mocked.today,
             Amount: 20.0,
             Account: [{ id: 4 }],
+            "Payments Remaining": 125
           },
         },
       ],
@@ -142,6 +144,7 @@ const _expected = {
           Date: _mocked.today,
           Amount: 0,
           Account: [{ id: 7 }],
+          "Payments Remaining": 7
         },
       }
 }
