@@ -91,12 +91,6 @@ describe("The payment generator", () => {
       );
     });
 
-    it("requests the Payments Remaining field", () => {
-      expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(
-        expect.objectContaining({ fields: expect.arrayContaining([]) })
-      );
-    });
-
     it("reads the Payment field on each account", () => {
       _mocked.records.forEach(r => {
         expect(r.getCellValue).toHaveBeenCalledWith(" Payment ");
