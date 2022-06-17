@@ -116,7 +116,7 @@ const _mocked = {
   today: new Date("3/4/2005"),
 };
 
-const hospitalAccount = record({ id: 3, " Payment ": 25.19 });
+const hospitalAccount = record({ id: 3, " Payment ": 25.19, "Payments Remaining": 34 });
 const doctorAccount = record({ id: 4, " Payment ": 20.0 });
 const dentistAccount = record({ id: 7, " Payment ": 0.0 });
 
