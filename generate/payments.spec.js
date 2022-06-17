@@ -93,7 +93,7 @@ describe("The payment generator", () => {
 
     xit("requests the Payments Remaining field", () => {
       expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(
-        expect.objectContaining({ fields: ["Payments Remaining"] })
+        expect.objectContaining({ fields: expect.arrayContaining(["Payments Remaining"]) })
       );
     });
 
