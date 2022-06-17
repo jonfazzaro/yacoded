@@ -1,8 +1,11 @@
-const subject = require("./payeeCode");
-const alert = require("../stubs/alert");
-const setTimeout = require("../stubs/setTimeout");
+jest.mock("../stubs/output", () => ({markdown: jest.fn()}))
 jest.mock("../stubs/alert", () => jest.fn());
 jest.mock("../stubs/setTimeout", () => jest.fn(fn => fn()));
+
+const subject = require("./payeeCode");
+const output = require("../stubs/output");
+const alert = require("../stubs/alert");
+const setTimeout = require("../stubs/setTimeout");
 
 describe("The generated payee code", () => {
     let js, document;
@@ -61,6 +64,14 @@ describe("The generated payee code", () => {
 });
 
 describe("The payment record parser", () => {
+
+    describe('given a payee with no phone number', () => {
+        it('shows a warning message', () => {
+            const data = subject.parse(new record("", null, ""));
+            expect(output.markdown).toHaveBeenCalledWith(subject.strings().warnNoPhone)
+        });
+    });
+
     it("maps a simple address", () => {
         const data = subject.parse(
             new record("Maynard", "666", "777 Vine Yard\nArizona Bay, AZ 78901")
@@ -153,22 +164,44 @@ describe("The payment record parser", () => {
         });
     });
 
-    function record(payee, account, address, phone) {
-        const data = {
-            Payee: payee,
-            "Account Number": [account],
-            Address: [address],
-            Phone: [phone],
-        };
-        data.getCellValue = key => data[key];
-        return data;
-    }
 });
+
+describe('The show', () => {
+    beforeEach(() => {
+        subject.show("lol")
+    })
+
+    it('displays the instructions', () => {
+        expect(output.markdown).toHaveBeenCalledWith(subject.strings().instructions);
+    });
+
+    it('shows the formatted code snippet', () => {
+        expect(output.markdown).toHaveBeenCalledWith("```lol");
+    });
+
+});
+
+function record(payee, account, address, phone) {
+    const data = {
+        Payee: payee,
+        "Account Number": [account],
+        Address: [address],
+        Phone: phone ? [phone] : null,
+    };
+    data.getCellValue = key => data[key];
+    return data;
+}
 
 function arrangeDocument() {
     _mocked.document.querySelector.mockReturnValue(_mocked.element);
     _mocked.document.getElementById.mockImplementation(id => _mocked.form[id]);
     _mocked.element.click.mockClear();
+}
+
+function field() {
+    return {
+        value: null,
+    };
 }
 
 const _mocked = {
@@ -209,9 +242,3 @@ _mocked.form = {
     inputPhone2: field(),
     inputPhone3: field(),
 };
-
-function field() {
-    return {
-        value: null,
-    };
-}

@@ -3,23 +3,27 @@ const output = require("../stubs/output");
 module.exports = {
     code,
     parse,
-    show
+    show,
+    strings
 };
 
 ////////////////////////////////
 
-function show(snippet) {
-    output.markdown("### To add this as a new payee");
-    output.markdown(
-        "1. Sign in to [Ally Bank](https://secure.ally.com).\n" +
-        "1. Open [this link to Ally Bill Pay](https://secure.ally.com/capi-gw/sso/billpay) in a new tab (Cmd+Click).\n" +
-        "1. Press Cmd+Option+C to open the developer console.\n" +
-        "1. Copy and paste this code into the console:");
+'use strict';
 
+function warnIfTheresNo(phone) {
+    if (!phone)
+        output.markdown(strings().warnNoPhone);
+}
+
+function show(snippet) {
+    output.markdown(strings().instructions);
     output.markdown("```" + snippet);
 }
 
 function parse(record) {
+    warnIfTheresNo(record.getCellValue("Phone"))
+
     return {
         payee: stripQuotes(record.getCellValue("Payee")),
         accountNumber: first(record.getCellValue("Account Number")),
@@ -66,15 +70,6 @@ function capture(fromString, expression, count = 1) {
     return match ? match.slice(1, count + 1) : Array(count).fill(null);
 }
 
-function rex() {
-    return {
-        phone: /\((\d{3})\) (\d{3})-(\d{4})/,
-        state: / ([A-Z]{2}) /,
-        zip5: /(\d{5})/,
-        zip4: /-(\d{4})/,
-    }
-}
-
 function mapToForm(data) {
     return {
         CompanyName: data.payee,
@@ -89,6 +84,28 @@ function mapToForm(data) {
         inputPhone2: data.phone.exchange,
         inputPhone3: data.phone.last,
     };
+}
+
+function rex() {
+    return {
+        phone: /\((\d{3})\) (\d{3})-(\d{4})/,
+        state: / ([A-Z]{2}) /,
+        zip5: /(\d{5})/,
+        zip4: /-(\d{4})/,
+    }
+}
+
+function strings() {
+    return {
+        warnNoPhone: "#### ⚠️ This payee does not have a phone number.\n" +
+            "Ally's bill pay system requires one, and it's much easier to enter here first.",
+        instructions: "### To add this as a new payee\n" +
+            "1. Sign in to [Ally Bank](https://secure.ally.com) in a new tab.\n" +
+            "1. Open [this link to Ally Bill Pay](https://secure.ally.com/capi-gw/sso/billpay) in another new tab.\n" +
+            "1. Press Cmd+Option+C to open the developer console.\n" +
+            "1. Copy and paste the code below into the console.\n" +
+            "1. Hit enter to run it. If everything looks good, submit the form.",
+    }
 }
 
 function code(data) {
