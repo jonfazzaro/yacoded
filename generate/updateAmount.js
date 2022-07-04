@@ -17,17 +17,20 @@ async function update(record, table) {
     if (amount == remaining)
         return
 
-    const difference = remaining - amount
+    await updateRecord(amount);
 
-    const total = record.getCellValue("Total")
-    await table.updateRecordAsync(record.id, {
-        "Total": (total - difference),
-    });
+    async function updateRecord(amount) {
+        const remaining = record.getCellValue("Remaining")
+        const total = record.getCellValue("Total");
+        await table.updateRecordAsync(record.id, {
+            "Total": (total - (remaining - amount)),
+        });
 
-    output.markdown(`New remaining amount: \$${remaining - difference}`)
+        output.markdown(`New remaining amount: \$${amount}`);
+    }
 
 }
 
-function isValid(input) {
-    return parseFloat(input)
+function isValid(inputValue) {
+    return !isNaN(parseFloat(inputValue))
 }
