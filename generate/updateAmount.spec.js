@@ -63,8 +63,8 @@ describe('When updating a balance', () => {
                 });
 
                 it('prints the new remaining amount', () => {
-                    
-                    expect(output.markdown).toHaveBeenCalledWith("New remaining amount: $14.45")
+                    expect(output.markdown)
+                        .toHaveBeenCalledWith("New remaining amount: $14.45")
                 });
             });
         });
