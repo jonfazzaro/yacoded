@@ -37,9 +37,9 @@ async function update(record, table) {
         return !isNaN(parseFloat(inputValue))
     }
 
-    function hasChanged(inputValue) {
+    function hasChanged(amount) {
         const remaining = record.getCellValue("Remaining");
-        return remaining != parseFloat(inputValue)
+        return remaining != amount
     }
 
     function printRemaining() {
