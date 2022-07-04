@@ -24,7 +24,6 @@ async function update(record, table) {
         output.markdown(`New remaining amount: \$${amount}`);
     }
 
-
     function calculateNewTotal(amount) {
         const remaining = record.getCellValue("Remaining");
         const total = record.getCellValue("Total");
