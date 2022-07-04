@@ -9,7 +9,6 @@ describe('When updating a balance', () => {
         output.markdown = jest.fn();
         input.textAsync = jest.fn(async () => { })
         await update();
-
     });
 
     describe('given no record', () => {
