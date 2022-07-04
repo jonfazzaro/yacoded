@@ -35,9 +35,8 @@ describe('When updating a balance', () => {
 
         describe('given an updated amount', () => {
             describe('that is the same as the remaining', () => {
-
                 it('does not update the record', async () => {
-                    input.textAsync.mockReturnValue(Promise.resolve("15.37"))
+                    arrangeAmount("15.37");
                     await update()
                     expect(_mocked.table.updateRecordAsync).not.toHaveBeenCalled()
                 });
@@ -71,3 +70,7 @@ describe('When updating a balance', () => {
         }
     }
 });
+
+function arrangeAmount(amount) {
+    input.textAsync.mockReturnValue(Promise.resolve(amount));
+}
