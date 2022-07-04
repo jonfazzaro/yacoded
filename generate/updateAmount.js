@@ -29,5 +29,5 @@ async function update(record, table) {
 }
 
 function isValid(input) {
-    return (input || "").trim();
+    return parseFloat(input)
 }
