@@ -20,7 +20,7 @@ async function update(record, table) {
     if (amount == remaining)
         return
 
-    const difference = remaining - parseFloat(textAmount);
+    const difference = remaining - amount
 
     const total = record.getCellValue("Total")
     await table.updateRecordAsync(record.id, {
