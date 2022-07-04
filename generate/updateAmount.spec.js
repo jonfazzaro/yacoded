@@ -35,9 +35,12 @@ describe('When updating a balance', () => {
 
         describe('given an updated amount', () => {
             describe('that is the same as the remaining', () => {
-                it('does not update the record', async () => {
+                beforeEach(async () => {
                     arrangeAmount("15.37");
                     await update()
+                });
+
+                it('does not update the record', () => {
                     expect(_mocked.table.updateRecordAsync)
                         .not.toHaveBeenCalled()
                 });
