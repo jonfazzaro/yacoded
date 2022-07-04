@@ -30,9 +30,11 @@ describe('When updating a balance', () => {
             itDoesNotUpdate();
 
             describe('in whitespace', () => {
-                it('should ', () => {
+               beforeEach(async () => {
+                arrangeAmount("  ")
+               }); 
 
-                });
+               itDoesNotUpdate()
 
             });
         });
