@@ -66,7 +66,7 @@ describe('When updating a balance', () => {
                 });
                 it('explains this', () => {
                     expect(output.markdown)
-                        .toHaveBeenCalledWith("That's already the remaining amount!")
+                        .toHaveBeenCalledWith("That's already the remaining amount! Goodbye.")
                 });
                 itDoesNotUpdate()
             });

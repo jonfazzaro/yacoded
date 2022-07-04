@@ -12,7 +12,7 @@ async function update(record, table) {
     validate(textAmount)
 
     if (!hasChanged(parseFloat(textAmount))) {
-        output.markdown("That's already the remaining amount!")
+        output.markdown("That's already the remaining amount! Goodbye.")
         return
     }
 
