@@ -13,7 +13,7 @@ describe('When updating a balance', () => {
 
     describe('given no record', () => {
         it('does nothing', async () => {
-            await update()
+            await subject.update()
         });
     });
 
