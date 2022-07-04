@@ -7,7 +7,7 @@ jest.mock("../stubs/input");
 describe('When updating a balance', () => {
     beforeEach(async () => {
         output.markdown = jest.fn();
-        input.textAsync = jest.fn(async () => { })
+        input.textAsync = jest.fn(async () => null)
         await update();
     });
 
@@ -30,11 +30,12 @@ describe('When updating a balance', () => {
             itDoesNotUpdate();
 
             describe('in whitespace', () => {
-               beforeEach(async () => {
-                arrangeAmount("  ")
-               }); 
+                beforeEach(async () => {
+                    arrangeAmount("  ")
+                    await update()
+                });
 
-               itDoesNotUpdate()
+                itDoesNotUpdate()
 
             });
         });

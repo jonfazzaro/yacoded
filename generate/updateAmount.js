@@ -13,7 +13,7 @@ async function update(record, table) {
     output.markdown(`\$${remaining} remaining.`)
 
     const textAmount = await input.textAsync("What's the new amount?")
-    if (!textAmount)
+    if (!(textAmount || "").trim())
         return
 
     const amount = parseFloat(textAmount)
