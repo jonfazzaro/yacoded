@@ -6,18 +6,16 @@ module.exports = { update }
 async function update(record, table) {
     if (!record) return
 
-    const remaining = record.getCellValue("Remaining")
-    output.markdown(`\$${remaining} remaining.`)
+    printRemaining();
 
     const textAmount = await input.textAsync("What's the new amount?")
     if (!isValid(textAmount))
         return
 
-    const amount = parseFloat(textAmount)
-    if (amount == remaining)
+    if (!hasChanged(textAmount))
         return
 
-    await updateRecord(amount);
+    await updateRecord(parseFloat(textAmount));
 
     async function updateRecord(amount) {
         await table.updateRecordAsync(record.id, {
@@ -34,8 +32,18 @@ async function update(record, table) {
         const updatedTotal = total - (remaining - amount);
         return updatedTotal;
     }
-}
 
-function isValid(inputValue) {
-    return !isNaN(parseFloat(inputValue))
+    function isValid(inputValue) {
+        return !isNaN(parseFloat(inputValue))
+    }
+
+    function hasChanged(inputValue) {
+        const remaining = record.getCellValue("Remaining");
+        return remaining != parseFloat(inputValue)
+    }
+
+    function printRemaining() {
+        const remaining = record.getCellValue("Remaining");
+        output.markdown(`\$${remaining} remaining.`);
+    }
 }
