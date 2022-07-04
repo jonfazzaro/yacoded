@@ -44,7 +44,6 @@ describe('When updating a balance', () => {
                     arrangeAmount("15.37");
                     await update()
                 });
-
                 itDoesNotUpdate()
             });
 
