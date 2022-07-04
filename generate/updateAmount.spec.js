@@ -34,17 +34,26 @@ describe('When updating a balance', () => {
 
         describe('given an amount', () => {
             describe('that is the same as the remaining', () => {
+
                 it('does not update the record', () => {
+                    input.textAsync.mockReturnValue(Promise.resolve("15.37"))
                     expect(_mocked.table.updateRecordAsync).not.toHaveBeenCalled()
                 });
             });
             
+            describe('that is less than the remaining', () => {
+                it('update the total by the difference', () => {
+                    input.textAsync.mockReturnValue(Promise.resolve("14.45"))
+                    expect(_mocked.table.updateRecordAsync(234, {"Total": 34.75 }))
+                });
+            });
         });
     });
 
     const _mocked = {
         table: { updateRecordAsync: jest.fn() },
         record: {
+            id: 234,
             getCellValue: fieldName => {
                 return {
                     "Remaining": 15.37,
