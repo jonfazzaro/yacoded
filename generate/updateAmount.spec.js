@@ -61,6 +61,11 @@ describe('When updating a balance', () => {
                     expect(_mocked.table.updateRecordAsync)
                         .toHaveBeenCalledWith(234, { "Total": 34.75 })
                 });
+
+                it('prints the new remaining amount', () => {
+                    
+                    expect(output.markdown).toHaveBeenCalledWith("New remaining amount: $14.45")
+                });
             });
         });
     });

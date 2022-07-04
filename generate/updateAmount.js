@@ -25,6 +25,6 @@ async function update(record, table) {
         "Total": (total - difference),
     });
 
-    // output.markdown(`New remaining amount: \$${remaining - difference}`)
+    output.markdown(`New remaining amount: \$${remaining - difference}`)
 
 }
