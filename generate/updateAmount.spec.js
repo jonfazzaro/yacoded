@@ -7,15 +7,11 @@ jest.mock("../stubs/input");
 describe('When updating a balance', () => {
     beforeEach(arrange);
 
-    fdescribe('given no record', () => {
+    describe('given no record', () => {
         beforeEach(async () => {
             input.textAsync.mockClear()
             _mocked.table.updateRecordAsync.mockClear()
-            try {
-                await subject.update()
-            } catch (error) {
-                return Promise.reject()
-            }
+            await subject.update()
         });
 
         it('does not prompt', () => {
@@ -26,6 +22,10 @@ describe('When updating a balance', () => {
     });
 
     describe('given a record and a table', () => {
+        beforeEach(async () => {
+            tryUpdate()
+        });
+
         it('should print the remaining amount', () => {
             expect(output.markdown).toHaveBeenCalledWith("$15.37 remaining.")
         });
@@ -38,17 +38,18 @@ describe('When updating a balance', () => {
 
             it('throws an error', () => {
                 expect(async () => await update())
+                    .rejects
                     .toThrow("Please enter a valid dollar amount.")
             });
             itDoesNotUpdate();
+        });
 
-            describe('in whitespace', () => {
-                beforeEach(async () => {
-                    arrangeAmount("  ")
-                    await tryUpdate() 
-                });
-                itDoesNotUpdate()
+        describe('in whitespace', () => {
+            beforeEach(async () => {
+                arrangeAmount("  ")
+                await tryUpdate()
             });
+            itDoesNotUpdate()
         });
 
         describe('given an updated amount', () => {
@@ -81,8 +82,7 @@ describe('When updating a balance', () => {
 
     async function arrange() {
         output.markdown = jest.fn();
-        input.textAsync = jest.fn(async () => { })
-        // await tryUpdate();
+        input.textAsync = jest.fn(() => { return new Promise(() => { }) })
     }
 
     async function update() {
@@ -91,9 +91,9 @@ describe('When updating a balance', () => {
 
     async function tryUpdate() {
         try {
-           await update() 
+            await update()
         } catch (error) {
-        //    return Promise.reject() 
+            //    return Promise.reject() 
         }
     }
 
