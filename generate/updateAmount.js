@@ -1,9 +1,7 @@
 const output = require("../stubs/output");
 const input = require("../stubs/input");
 
-module.exports = {
-    update
-}
+module.exports = { update }
 
 async function update(record, table) {
     if (!record)

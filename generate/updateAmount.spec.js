@@ -10,6 +10,7 @@ describe('When updating a balance', () => {
     describe('given no record', () => {
         beforeEach(async () => {
             input.textAsync.mockClear()
+            _mocked.table.updateRecordAsync.mockClear()
             await subject.update()
         });
 
