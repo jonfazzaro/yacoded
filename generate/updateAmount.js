@@ -15,7 +15,6 @@ function update(record) {
     // const amount = await 
     input.textAsync("What's the new amount?")
     // if (!amount)
-        output.markdown("Kthxbye!")
     // const difference = remaining - parseFloat(amount);
 
     // const total = record.getCellValue("Total")
