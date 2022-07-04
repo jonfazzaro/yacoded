@@ -44,7 +44,7 @@ describe('When updating a balance', () => {
 
             describe('that is less than the remaining', () => {
                 it('update the total by the difference', async () => {
-                    input.textAsync.mockReturnValue(Promise.resolve("14.45"))
+                    arrangeAmount("14.45")
                     await update()
                     expect(_mocked.table.updateRecordAsync)
                         .toHaveBeenCalledWith(234, { "Total": 34.75 })
@@ -60,7 +60,7 @@ describe('When updating a balance', () => {
     function arrangeAmount(amount) {
         input.textAsync.mockReturnValue(Promise.resolve(amount));
     }
-    
+
     const _mocked = {
         table: { updateRecordAsync: jest.fn() },
         record: {
