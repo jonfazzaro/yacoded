@@ -20,15 +20,20 @@ async function update(record, table) {
     await updateRecord(amount);
 
     async function updateRecord(amount) {
-        const remaining = record.getCellValue("Remaining")
-        const total = record.getCellValue("Total");
         await table.updateRecordAsync(record.id, {
-            "Total": (total - (remaining - amount)),
+            "Total": calculateNewTotal(amount),
         });
 
         output.markdown(`New remaining amount: \$${amount}`);
     }
 
+
+    function calculateNewTotal(amount) {
+        const remaining = record.getCellValue("Remaining");
+        const total = record.getCellValue("Total");
+        const updatedTotal = total - (remaining - amount);
+        return updatedTotal;
+    }
 }
 
 function isValid(inputValue) {
