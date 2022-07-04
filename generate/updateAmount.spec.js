@@ -7,7 +7,7 @@ jest.mock("../stubs/input");
 describe('When updating a balance', () => {
     beforeEach(async () => {
         output.markdown = jest.fn();
-        input.textAsync = jest.fn(async () => null)
+        input.textAsync = jest.fn(async () => {})
         await update();
     });
 
