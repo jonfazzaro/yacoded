@@ -4,8 +4,7 @@ const input = require("../stubs/input");
 module.exports = { update }
 
 async function update(record, table) {
-    if (!record)
-        return
+    if (!record) return
 
     const remaining = record.getCellValue("Remaining")
     output.markdown(`\$${remaining} remaining.`)
