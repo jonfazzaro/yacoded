@@ -57,6 +57,10 @@ describe('When updating a balance', () => {
         await subject.update(_mocked.record, _mocked.table);
     }
 
+    function arrangeAmount(amount) {
+        input.textAsync.mockReturnValue(Promise.resolve(amount));
+    }
+    
     const _mocked = {
         table: { updateRecordAsync: jest.fn() },
         record: {
@@ -70,7 +74,3 @@ describe('When updating a balance', () => {
         }
     }
 });
-
-function arrangeAmount(amount) {
-    input.textAsync.mockReturnValue(Promise.resolve(amount));
-}
