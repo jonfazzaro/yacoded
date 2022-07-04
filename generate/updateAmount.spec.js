@@ -8,7 +8,8 @@ describe('When updating a balance', () => {
     beforeEach(async () => {
         output.markdown = jest.fn();
         input.textAsync = jest.fn(async () => { })
-        await subject.update(_mocked.record, _mocked.table);
+        await update();
+
     });
 
     describe('given no record', () => {
@@ -52,6 +53,10 @@ describe('When updating a balance', () => {
             });
         });
     });
+
+    async function update() {
+        await subject.update(_mocked.record, _mocked.table);
+    }
 
     const _mocked = {
         table: { updateRecordAsync: jest.fn() },
