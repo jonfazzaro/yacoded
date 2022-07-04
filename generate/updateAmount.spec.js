@@ -5,16 +5,18 @@ jest.mock("../stubs/output");
 jest.mock("../stubs/input");
 
 describe('When updating a balance', () => {
-    beforeEach(async () => {
-        output.markdown = jest.fn();
-        input.textAsync = jest.fn(async () => {})
-        await update();
-    });
+    beforeEach(arrange);
 
     describe('given no record', () => {
         beforeEach(async () => {
+            input.textAsync.mockClear()
             await subject.update()
         });
+
+        it('does not prompt', () => {
+            expect(input.textAsync).not.toHaveBeenCalled()
+        });
+
         itDoesNotUpdate()
     });
 
@@ -61,6 +63,12 @@ describe('When updating a balance', () => {
             });
         });
     });
+
+    async function arrange() {
+        output.markdown = jest.fn();
+        input.textAsync = jest.fn(async () => { })
+        await update();
+    }
 
     async function update() {
         await subject.update(_mocked.record, _mocked.table);
