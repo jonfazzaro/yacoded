@@ -11,12 +11,10 @@ async function update(record, table) {
     const textAmount = await input.textAsync("What's the new amount?")
     validate(textAmount)
 
-    if (!hasChanged(parseFloat(textAmount))) {
+    if (hasChanged(parseFloat(textAmount)))
+        await updateRecord(parseFloat(textAmount));
+    else
         output.markdown("That's already the remaining amount! Goodbye.")
-        return
-    }
-
-    await updateRecord(parseFloat(textAmount));
 
     async function updateRecord(amount) {
         await table.updateRecordAsync(record.id, {
