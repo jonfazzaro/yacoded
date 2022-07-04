@@ -64,6 +64,10 @@ describe('When updating a balance', () => {
                     arrangeAmount("15.37");
                     await update()
                 });
+                it('explains this', () => {
+                    expect(output.markdown)
+                        .toHaveBeenCalledWith("That's already the remaining amount!")
+                });
                 itDoesNotUpdate()
             });
 
