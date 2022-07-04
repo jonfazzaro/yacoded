@@ -38,7 +38,8 @@ describe('When updating a balance', () => {
                 it('does not update the record', async () => {
                     arrangeAmount("15.37");
                     await update()
-                    expect(_mocked.table.updateRecordAsync).not.toHaveBeenCalled()
+                    expect(_mocked.table.updateRecordAsync)
+                        .not.toHaveBeenCalled()
                 });
             });
 
