@@ -27,8 +27,13 @@ describe('When updating a balance', () => {
         });
 
         describe('given no amount', () => {
-            it('does not update the record', () => {
-                expect(_mocked.table.updateRecordAsync).not.toHaveBeenCalled()
+            itDoesNotUpdate();
+
+            describe('in whitespace', () => {
+                it('should ', () => {
+
+                });
+
             });
         });
 
@@ -39,10 +44,7 @@ describe('When updating a balance', () => {
                     await update()
                 });
 
-                it('does not update the record', () => {
-                    expect(_mocked.table.updateRecordAsync)
-                        .not.toHaveBeenCalled()
-                });
+                itDoesNotUpdate()
             });
 
             describe('that is less than the remaining', () => {
@@ -67,6 +69,12 @@ describe('When updating a balance', () => {
         input.textAsync.mockReturnValue(Promise.resolve(amount));
     }
 
+    function itDoesNotUpdate() {
+        it('does not update the record', () => {
+            expect(_mocked.table.updateRecordAsync).not.toHaveBeenCalled();
+        });
+    }
+
     const _mocked = {
         table: { updateRecordAsync: jest.fn() },
         record: {
@@ -80,3 +88,4 @@ describe('When updating a balance', () => {
         }
     }
 });
+
