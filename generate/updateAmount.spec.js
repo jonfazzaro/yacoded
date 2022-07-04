@@ -44,10 +44,16 @@ describe('When updating a balance', () => {
             itDoesNotUpdate();
         });
 
-        describe('in whitespace', () => {
+        describe('given whitespace', () => {
             beforeEach(async () => {
                 arrangeAmount("  ")
                 await tryUpdate()
+            });
+
+            it('throws an error', () => {
+                expect(async () => await update())
+                    .rejects
+                    .toThrow("Please enter a valid dollar amount.")
             });
             itDoesNotUpdate()
         });
