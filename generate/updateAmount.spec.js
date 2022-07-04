@@ -5,15 +5,15 @@ jest.mock("../stubs/output");
 jest.mock("../stubs/input");
 
 describe('When updating a balance', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
         output.markdown = jest.fn();
         input.textAsync = jest.fn(async () => { })
-        subject.update(_mocked.record, _mocked.table);
+        await subject.update(_mocked.record, _mocked.table);
     });
 
     describe('given no record', () => {
-        it('does nothing', () => {
-            subject.update()
+        it('does nothing', async () => {
+            await subject.update()
         });
     });
 
@@ -35,16 +35,19 @@ describe('When updating a balance', () => {
         describe('given an amount', () => {
             describe('that is the same as the remaining', () => {
 
-                it('does not update the record', () => {
+                it('does not update the record', async () => {
                     input.textAsync.mockReturnValue(Promise.resolve("15.37"))
+                    await subject.update(_mocked.record, _mocked.table);
                     expect(_mocked.table.updateRecordAsync).not.toHaveBeenCalled()
                 });
             });
-            
+
             describe('that is less than the remaining', () => {
-                it('update the total by the difference', () => {
+                it('update the total by the difference', async () => {
                     input.textAsync.mockReturnValue(Promise.resolve("14.45"))
-                    expect(_mocked.table.updateRecordAsync(234, {"Total": 34.75 }))
+                    await subject.update(_mocked.record, _mocked.table);
+                    expect(_mocked.table.updateRecordAsync)
+                        .toHaveBeenCalledWith(234, { "Total": 34.75 })
                 });
             });
         });

@@ -5,22 +5,27 @@ module.exports = {
     update
 }
 
-function update(record) {
+async function update(record, table) {
     if (!record)
         return
 
     const remaining = record.getCellValue("Remaining")
     output.markdown(`\$${remaining} remaining.`)
 
-    // const amount = await 
-    input.textAsync("What's the new amount?")
-    // if (!amount)
-    // const difference = remaining - parseFloat(amount);
+    const textAmount = await input.textAsync("What's the new amount?")
+    if (!textAmount)
+        return
 
-    // const total = record.getCellValue("Total")
-    // await table.updateRecordAsync(record.id, {
-    //     "Total": (total - difference),
-    // });
+    const amount = parseFloat(textAmount)
+    if (amount == remaining)
+        return
+
+    const difference = remaining - parseFloat(textAmount);
+
+    const total = record.getCellValue("Total")
+    await table.updateRecordAsync(record.id, {
+        "Total": (total - difference),
+    });
 
     // output.markdown(`New remaining amount: \$${remaining - difference}`)
 
