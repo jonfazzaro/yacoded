@@ -12,9 +12,10 @@ describe('When updating a balance', () => {
     });
 
     describe('given no record', () => {
-        it('does nothing', async () => {
+        beforeEach(async () => {
             await subject.update()
         });
+        itDoesNotUpdate()
     });
 
     describe('given a record and a table', () => {
