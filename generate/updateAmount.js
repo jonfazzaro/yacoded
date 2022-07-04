@@ -12,7 +12,7 @@ async function update(record, table) {
     if (!isValid(textAmount))
         return
 
-    if (!hasChanged(textAmount))
+    if (!hasChanged(parseFloat(textAmount)))
         return
 
     await updateRecord(parseFloat(textAmount));
