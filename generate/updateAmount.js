@@ -9,8 +9,7 @@ async function update(record, table) {
     printRemaining();
 
     const textAmount = await input.textAsync("What's the new amount?")
-    if (!isValid(textAmount))
-        return
+    validate(textAmount)
 
     if (!hasChanged(parseFloat(textAmount)))
         return
@@ -33,8 +32,9 @@ async function update(record, table) {
         return updatedTotal;
     }
 
-    function isValid(inputValue) {
-        return !isNaN(parseFloat(inputValue))
+    function validate(inputValue) {
+        if (isNaN(parseFloat(inputValue)))
+            throw new Error("Please enter a valid dollar amount.")
     }
 
     function hasChanged(amount) {

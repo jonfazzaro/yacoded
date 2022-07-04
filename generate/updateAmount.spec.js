@@ -7,11 +7,15 @@ jest.mock("../stubs/input");
 describe('When updating a balance', () => {
     beforeEach(arrange);
 
-    describe('given no record', () => {
+    fdescribe('given no record', () => {
         beforeEach(async () => {
             input.textAsync.mockClear()
             _mocked.table.updateRecordAsync.mockClear()
-            await subject.update()
+            try {
+                await subject.update()
+            } catch (error) {
+                return Promise.reject()
+            }
         });
 
         it('does not prompt', () => {
@@ -31,12 +35,17 @@ describe('When updating a balance', () => {
         });
 
         describe('given no amount', () => {
+
+            it('throws an error', () => {
+                expect(async () => await update())
+                    .toThrow("Please enter a valid dollar amount.")
+            });
             itDoesNotUpdate();
 
             describe('in whitespace', () => {
                 beforeEach(async () => {
                     arrangeAmount("  ")
-                    await update()
+                    await tryUpdate() 
                 });
                 itDoesNotUpdate()
             });
@@ -73,11 +82,19 @@ describe('When updating a balance', () => {
     async function arrange() {
         output.markdown = jest.fn();
         input.textAsync = jest.fn(async () => { })
-        await update();
+        // await tryUpdate();
     }
 
     async function update() {
         await subject.update(_mocked.record, _mocked.table);
+    }
+
+    async function tryUpdate() {
+        try {
+           await update() 
+        } catch (error) {
+        //    return Promise.reject() 
+        }
     }
 
     function arrangeAmount(amount) {
