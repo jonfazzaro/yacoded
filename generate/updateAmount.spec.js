@@ -38,7 +38,7 @@ describe('When updating a balance', () => {
 
                 it('does not update the record', async () => {
                     input.textAsync.mockReturnValue(Promise.resolve("15.37"))
-                    await subject.update(_mocked.record, _mocked.table);
+                    await update()
                     expect(_mocked.table.updateRecordAsync).not.toHaveBeenCalled()
                 });
             });
