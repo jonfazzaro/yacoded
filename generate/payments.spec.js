@@ -9,7 +9,7 @@ describe("The payment generator", () => {
   beforeEach(() => {
     _mocked.getTable.mockClear();
     base.getTable = _mocked.getTable;
-    output.markdown = jest.fn()
+    output.markdown = jest.fn();
   });
   describe("when adding months", () => {
     describe("given a date in the middle of the year", () => {
@@ -87,7 +87,7 @@ describe("The payment generator", () => {
 
     it("specifies the fields", () => {
       expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(
-          expect.objectContaining({ fields: [" Payment ", "Payments Remaining"] })
+        expect.objectContaining({ fields: [" Payment ", "Payments Remaining"] })
       );
     });
 
@@ -100,12 +100,45 @@ describe("The payment generator", () => {
 
     it("does not create zero dollar payments", () => {
       expect(_mocked.createRecordsAsync).not.toHaveBeenCalledWith(
-        expect.arrayContaining([ _expected.zeroDollarPayment ])
+        expect.arrayContaining([_expected.zeroDollarPayment])
       );
     });
 
-    it('outputs the results', () => {
-        expect(output.markdown).toHaveBeenCalledWith("Created 3 of 2 payments.")
+    it("outputs the results", () => {
+      expect(output.markdown).toHaveBeenCalledWith("Created 3 of 2 payments.");
+    });
+
+    describe("given a budget amount", () => {
+      beforeEach(async () => {
+        _mocked.getTable.mockClear();
+        _mocked.createRecordsAsync.mockClear();
+      });
+
+      describe("equal to the total payments", () => {
+        beforeEach(async () => {
+          await subject.generatePayments(_mocked.today, 45.19);
+        });
+
+        it("generates the same payments", () => {
+          expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
+          expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
+            expect.arrayContaining(_expected.payments)
+          );
+        });
+      });
+
+      describe("less than the total payments", () => {
+        beforeEach(async () => {
+          await subject.generatePayments(_mocked.today, 40);
+        });
+
+        fit("generates an abbreviated list of payments", () => {
+          expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
+          expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
+            expect.arrayContaining(_expected.abbreviatedPayments)
+          );
+        });
+      });
     });
   });
 });
@@ -116,38 +149,68 @@ const _mocked = {
   today: new Date("3/4/2005"),
 };
 
-const hospitalAccount = record({ id: 3, " Payment ": 25.19, "Payments Remaining": 34 });
-const doctorAccount = record({ id: 4, " Payment ": 20.0, "Payments Remaining": 125 });
-const dentistAccount = record({ id: 7, " Payment ": 0.0, "Payments Remaining": 7 });
+const hospitalAccount = record({
+  id: 3,
+  " Payment ": 25.19,
+  "Payments Remaining": 34,
+});
+const doctorAccount = record({
+  id: 4,
+  " Payment ": 20.0,
+  "Payments Remaining": 125,
+});
+const dentistAccount = record({
+  id: 7,
+  " Payment ": 0.0,
+  "Payments Remaining": 7,
+});
 
-const _expected = { 
-    payments: [
-        {
-          fields: {
-            Date: _mocked.today,
-            Amount: 25.19,
-            Account: [{ id: 3 }],
-            "Payments Remaining": 34
-          },
-        },
-        {
-          fields: {
-            Date: _mocked.today,
-            Amount: 20.0,
-            Account: [{ id: 4 }],
-            "Payments Remaining": 125
-          },
-        },
-      ],
-      zeroDollarPayment: {
-        fields: {
-          Date: _mocked.today,
-          Amount: 0,
-          Account: [{ id: 7 }],
-          "Payments Remaining": 7
-        },
-      }
-}
+const _expected = {
+  payments: [
+    {
+      fields: {
+        Date: _mocked.today,
+        Amount: 25.19,
+        Account: [{ id: 3 }],
+        "Payments Remaining": 34,
+      },
+    },
+    {
+      fields: {
+        Date: _mocked.today,
+        Amount: 20.0,
+        Account: [{ id: 4 }],
+        "Payments Remaining": 125,
+      },
+    },
+  ],
+  abbreviatedPayments: [
+    {
+      fields: {
+        Date: _mocked.today,
+        Amount: 25.19,
+        Account: [{ id: 3 }],
+        "Payments Remaining": 34,
+      },
+    },
+    {
+      fields: {
+        Date: _mocked.today,
+        Amount: 14.81,
+        Account: [{ id: 4 }],
+        "Payments Remaining": 125,
+      },
+    },
+  ],
+  zeroDollarPayment: {
+    fields: {
+      Date: _mocked.today,
+      Amount: 0,
+      Account: [{ id: 7 }],
+      "Payments Remaining": 7,
+    },
+  },
+};
 
 _mocked.selectRecordsAsync = jest.fn(() =>
   Promise.resolve({ records: _mocked.records })

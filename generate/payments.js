@@ -9,7 +9,7 @@ module.exports = {
 
 ///
 
-"use strict";
+("use strict");
 
 function addMonths(date, months) {
   const d = date.getDate();
@@ -32,15 +32,29 @@ function byDateDescending() {
   };
 }
 
-async function generatePayments(date) {
+async function generatePayments(date, budget) {
   const results = await queryPayingAccounts();
-  const proposed = payments(results.records, date);
+  const proposed = payments(results.records, date, budget);
   const created = await create(proposed);
   output.markdown(`Created ${created.length} of ${proposed.length} payments.`);
 }
 
-function payments(accounts, date) {
-  return accounts.filter(outZeroDollarPayments).map(toPaymentsOn(date));
+function payments(accounts, date, budget) {
+  const results = accounts.map(toPaymentsOn(date));
+
+  if (budget) {
+    let remaining = budget;
+    console.log(remaining);
+    for (const payment of results) {
+      if (remaining >= payment.fields.Amount) {
+        remaining -= payment.fields.Amount;
+      } else {
+          payment.Amount = remaining;
+      }
+    }
+  }
+
+  return results.filter(p => 0 < p.fields.Amount);
 }
 
 async function create(payments) {
@@ -57,7 +71,7 @@ function toPaymentsOn(date) {
       Date: date,
       Amount: paymentAmount(account),
       Account: [{ id: account.id }],
-      "Payments Remaining": account.getCellValue("Payments Remaining")
+      "Payments Remaining": account.getCellValue("Payments Remaining"),
     },
   });
 }
