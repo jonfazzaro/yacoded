@@ -132,7 +132,7 @@ describe("The payment generator", () => {
           await subject.generatePayments(_mocked.today, 40);
         });
 
-        fit("generates an abbreviated list of payments", () => {
+        it("generates an abbreviated list of payments", () => {
           expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
           expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
             expect.arrayContaining(_expected.abbreviatedPayments)

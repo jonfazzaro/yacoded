@@ -44,12 +44,11 @@ function payments(accounts, date, budget) {
 
   if (budget) {
     let remaining = budget;
-    console.log(remaining);
     for (const payment of results) {
       if (remaining >= payment.fields.Amount) {
         remaining -= payment.fields.Amount;
       } else {
-          payment.Amount = remaining;
+          payment.fields.Amount = parseFloat(remaining.toFixed(2));
       }
     }
   }
