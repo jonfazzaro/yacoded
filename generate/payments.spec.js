@@ -139,6 +139,19 @@ describe("The payment generator", () => {
           );
         });
       });
+
+      describe('greater than the total payments', () => {
+        beforeEach(async () => {
+          await subject.generatePayments(_mocked.today, 50);
+        }); 
+
+        it("snowballs the payments", () => {
+          expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
+          expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
+            expect.arrayContaining(_expected.snowballedPayments)
+          );
+        }); 
+      });
     });
   });
 });
@@ -197,6 +210,24 @@ const _expected = {
       fields: {
         Date: _mocked.today,
         Amount: 14.81,
+        Account: [{ id: 4 }],
+        "Payments Remaining": 125,
+      },
+    },
+  ],
+  snowballedPayments: [
+    {
+      fields: {
+        Date: _mocked.today,
+        Amount: 30.00,
+        Account: [{ id: 3 }],
+        "Payments Remaining": 34,
+      },
+    },
+    {
+      fields: {
+        Date: _mocked.today,
+        Amount: 20.00,
         Account: [{ id: 4 }],
         "Payments Remaining": 125,
       },

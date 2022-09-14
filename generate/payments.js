@@ -43,6 +43,12 @@ function payments(accounts, date, budget) {
   const results = accounts.sort(by(balance)).map(toPaymentsOn(date));
 
   if (budget) {
+    // const total = results.reduce((t, p) => t + p.fields.Amount)
+    // const delta = budget - total;
+    // if (delta <= 0) {
+
+    // }
+
     let remaining = budget;
     for (const payment of results) {
       if (remaining >= payment.fields.Amount) {
