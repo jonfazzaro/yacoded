@@ -40,7 +40,7 @@ async function generatePayments(date, budget) {
 }
 
 function payments(accounts, date, budget) {
-  const results = accounts.map(toPaymentsOn(date));
+  const results = accounts.sort(by(balance)).map(toPaymentsOn(date));
 
   if (budget) {
     let remaining = budget;
@@ -48,12 +48,16 @@ function payments(accounts, date, budget) {
       if (remaining >= payment.fields.Amount) {
         remaining -= payment.fields.Amount;
       } else {
-          payment.fields.Amount = parseFloat(remaining.toFixed(2));
+        payment.fields.Amount = parseFloat(remaining.toFixed(2));
       }
     }
   }
 
   return results.filter(p => 0 < p.fields.Amount);
+}
+
+function balance(account) {
+  return account["Payments Remaining"] * paymentAmount(account);
 }
 
 async function create(payments) {
@@ -88,4 +92,8 @@ function date(payment) {
 
 function paymentAmount(account) {
   return account.getCellValue(" Payment ");
+}
+
+function by(fn) {
+  return (a, b) => fn(a) - fn(b);
 }

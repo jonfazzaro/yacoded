@@ -76,7 +76,7 @@ describe("The payment generator", () => {
 
   describe("when generating payments", () => {
     beforeEach(async () => {
-      _mocked.records = [hospitalAccount, doctorAccount, dentistAccount];
+      _mocked.records = [doctorAccount, hospitalAccount, dentistAccount];
       await subject.generatePayments(_mocked.today);
     });
 
