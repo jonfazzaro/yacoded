@@ -48,7 +48,15 @@ function createPayments(accounts, date, budget) {
 
   if (budget) distribute(remainingAfterMinimum(payments, budget), payments);
 
+  updateNumberOfRemaining(payments)
+
   return payments;
+}
+
+function updateNumberOfRemaining(payments) {
+  for (const payment of payments) {
+    payment.fields["Payments Remaining"] = parseInt(balanceAfter(payment)/paymentAmount(account(payment)).toFixed(0))
+  } 
 }
 
 function distribute(snowball, payments) {
