@@ -41,6 +41,7 @@ async function generatePayments(date, budget) {
 
 function createPayments(accounts, date, budget) {
   const payments = accounts
+    .slice()
     .sort(by(balance))
     .map(toPaymentsOn(date))
     .filter(p => p.fields.Amount);
