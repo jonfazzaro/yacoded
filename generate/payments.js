@@ -40,51 +40,46 @@ async function generatePayments(date, budget) {
 }
 
 function createPayments(accounts, date, budget) {
-  const results = accounts
+  const payments = accounts
     .sort(by(balance))
     .map(toPaymentsOn(date))
     .filter(p => p.fields.Amount);
 
   if (budget) {
-    // const total = results.reduce((t, p) => t + p.fields.Amount)
-    // const delta = budget - total;
-    // if (delta < 0) {
-    //   let remaining = delta
-    //   for (const payment of results.slice().reverse()) {
-    //     payment.fields.Amount -=
-    //   }
-    // }
-
     let remaining = budget;
-    for (const payment of results) {
+    for (const payment of payments) {
       if (remaining <= payment.fields.Amount)
-        payment.fields.Amount = parseFloat(remaining.toFixed(2));
+        payment.fields.Amount = amount(remaining);
 
       remaining -= payment.fields.Amount;
     }
 
-    if (remaining > 0) {
-      results[0].fields.Amount += remaining;
+    for (const payment of payments) {
+      const extra = amount(
+        Math.min(remaining, balance(account(payment)) - payment.fields.Amount)
+      );
+      payment.fields.Amount += extra;
+      remaining -= extra;
     }
   }
 
-  return results.filter(p => 0 < p.fields.Amount);
+  return payments.filter(p => 0 < p.fields.Amount);
 }
 
-function accountBalance(payment) {
-  return payment["Payments Remaining"] * payment.fields.Amount;
+function account(payment) {
+  return payment.fields.Account[0];
+}
+
+function amount(value) {
+  return parseFloat(value.toFixed(2));
 }
 
 function balance(account) {
-  return account["Payments Remaining"] * paymentAmount(account);
+  return account.getCellValue("Remaining");
 }
 
 async function create(payments) {
   return await base.getTable("Payments").createRecordsAsync(payments);
-}
-
-function outZeroDollarPayments(account) {
-  return 0 < paymentAmount(account);
 }
 
 function toPaymentsOn(date) {
@@ -92,7 +87,7 @@ function toPaymentsOn(date) {
     fields: {
       Date: date,
       Amount: paymentAmount(account),
-      Account: [{ id: account.id }],
+      Account: [account],
       "Payments Remaining": account.getCellValue("Payments Remaining"),
     },
   });

@@ -140,17 +140,31 @@ describe("The payment generator", () => {
         });
       });
 
-      describe('greater than the total payments', () => {
+      describe("greater than the total payments", () => {
         beforeEach(async () => {
           await subject.generatePayments(_mocked.today, 50);
-        }); 
+        });
 
         it("snowballs the payments", () => {
           expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
           expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
             expect.arrayContaining(_expected.snowballedPayments)
           );
-        }); 
+        });
+
+        describe("by enough to pay off the first account", () => {
+          beforeEach(async () => {
+            _mocked.createRecordsAsync.mockClear();
+            await subject.generatePayments(_mocked.today, 900);
+          });
+
+          it("pays off the first account and boosts the second", () => {
+            expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
+            expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
+              expect.arrayContaining(_expected.snowballPayoffPayments)
+            );
+          });
+        });
       });
     });
   });
@@ -166,16 +180,19 @@ const hospitalAccount = record({
   id: 3,
   " Payment ": 25.19,
   "Payments Remaining": 34,
+  "Remaining": 856.00,
 });
 const doctorAccount = record({
   id: 4,
   " Payment ": 20.0,
   "Payments Remaining": 125,
+  "Remaining": 2500.00,
 });
 const dentistAccount = record({
   id: 7,
   " Payment ": 0.0,
-  "Payments Remaining": 7,
+  "Payments Remaining": null,
+  "Remaining": 400.00,
 });
 
 const _expected = {
@@ -184,7 +201,7 @@ const _expected = {
       fields: {
         Date: _mocked.today,
         Amount: 25.19,
-        Account: [{ id: 3 }],
+        Account: [hospitalAccount],
         "Payments Remaining": 34,
       },
     },
@@ -192,7 +209,7 @@ const _expected = {
       fields: {
         Date: _mocked.today,
         Amount: 20.0,
-        Account: [{ id: 4 }],
+        Account: [doctorAccount],
         "Payments Remaining": 125,
       },
     },
@@ -202,7 +219,7 @@ const _expected = {
       fields: {
         Date: _mocked.today,
         Amount: 25.19,
-        Account: [{ id: 3 }],
+        Account: [hospitalAccount],
         "Payments Remaining": 34,
       },
     },
@@ -210,7 +227,7 @@ const _expected = {
       fields: {
         Date: _mocked.today,
         Amount: 14.81,
-        Account: [{ id: 4 }],
+        Account: [doctorAccount],
         "Payments Remaining": 125,
       },
     },
@@ -219,16 +236,34 @@ const _expected = {
     {
       fields: {
         Date: _mocked.today,
-        Amount: 30.00,
-        Account: [{ id: 3 }],
+        Amount: 30.0,
+        Account: [hospitalAccount],
         "Payments Remaining": 34,
       },
     },
     {
       fields: {
         Date: _mocked.today,
-        Amount: 20.00,
-        Account: [{ id: 4 }],
+        Amount: 20.0,
+        Account: [doctorAccount],
+        "Payments Remaining": 125,
+      },
+    },
+  ],
+  snowballPayoffPayments: [
+    {
+      fields: {
+        Date: _mocked.today,
+        Amount: 856.00,
+        Account: [hospitalAccount],
+        "Payments Remaining": 34,
+      },
+    },
+    {
+      fields: {
+        Date: _mocked.today,
+        Amount: 44.0,
+        Account: [doctorAccount],
         "Payments Remaining": 125,
       },
     },
@@ -237,7 +272,7 @@ const _expected = {
     fields: {
       Date: _mocked.today,
       Amount: 0,
-      Account: [{ id: 7 }],
+      Account: [dentistAccount],
       "Payments Remaining": 7,
     },
   },
