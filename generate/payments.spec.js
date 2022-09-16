@@ -87,7 +87,7 @@ describe("The payment generator", () => {
 
     it("specifies the fields", () => {
       expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(
-        expect.objectContaining({ fields: [" Payment ", "Payments Remaining"] })
+        expect.objectContaining({ fields: [" Payment ", "Payments Remaining", "Remaining"] })
       );
     });
 
@@ -132,7 +132,7 @@ describe("The payment generator", () => {
           await subject.generatePayments(_mocked.today, 40);
         });
 
-        it("generates an abbreviated list of payments", () => {
+        it("generates an forshortened list of payments", () => {
           expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
           expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
             expect.arrayContaining(_expected.abbreviatedPayments)
@@ -158,7 +158,7 @@ describe("The payment generator", () => {
             await subject.generatePayments(_mocked.today, 900);
           });
 
-          it("pays off the first account and boosts the second", () => {
+          it("pays off the first account and adds to the second", () => {
             expect(_mocked.getTable).toHaveBeenCalledWith("Payments");
             expect(_mocked.createRecordsAsync).toHaveBeenCalledWith(
               expect.arrayContaining(_expected.snowballPayoffPayments)

@@ -45,25 +45,33 @@ function createPayments(accounts, date, budget) {
     .map(toPaymentsOn(date))
     .filter(p => p.fields.Amount);
 
-  if (budget) {
-    let remaining = budget;
-    for (const payment of payments) {
-      if (remaining <= payment.fields.Amount)
-        payment.fields.Amount = amount(remaining);
+  if (budget) distribute(remainingAfterMinimum(payments, budget), payments);
 
-      remaining -= payment.fields.Amount;
-    }
+  return payments;
+}
 
-    for (const payment of payments) {
-      const extra = amount(
-        Math.min(remaining, balance(account(payment)) - payment.fields.Amount)
-      );
-      payment.fields.Amount += extra;
-      remaining -= extra;
-    }
+function distribute(snowball, payments) {
+  let remaining = snowball;
+  for (const payment of payments) {
+    const extra = amount(Math.min(remaining, balanceAfter(payment)));
+    payment.fields.Amount += extra;
+    remaining -= extra;
   }
+}
 
-  return payments.filter(p => 0 < p.fields.Amount);
+function balanceAfter(payment) {
+  return balance(account(payment)) - payment.fields.Amount;
+}
+
+function remainingAfterMinimum(payments, budget) {
+  let remaining = budget;
+  for (const payment of payments) {
+    if (remaining <= payment.fields.Amount)
+      payment.fields.Amount = amount(remaining);
+
+    remaining -= payment.fields.Amount;
+  }
+  return remaining;
 }
 
 function account(payment) {
@@ -97,7 +105,7 @@ async function queryPayingAccounts() {
   return await base
     .getTable("Accounts")
     .getView("Paying")
-    .selectRecordsAsync({ fields: [" Payment ", "Payments Remaining"] });
+    .selectRecordsAsync({ fields: [" Payment ", "Payments Remaining", "Remaining"] });
 }
 
 function date(payment) {
