@@ -9,7 +9,7 @@ module.exports = {
 
 ///
 
-"use strict";
+("use strict");
 
 function addMonths(date, months) {
   const d = date.getDate();
@@ -32,23 +32,62 @@ function byDateDescending() {
   };
 }
 
-async function generatePayments(date) {
+async function generatePayments(date, budget) {
   const results = await queryPayingAccounts();
-  const proposed = payments(results.records, date);
+  const proposed = createPayments(results.records, date, budget);
   const created = await create(proposed);
   output.markdown(`Created ${created.length} of ${proposed.length} payments.`);
 }
 
-function payments(accounts, date) {
-  return accounts.filter(outZeroDollarPayments).map(toPaymentsOn(date));
+function createPayments(accounts, date, budget) {
+  const payments = accounts
+    .sort(by(balance))
+    .map(toPaymentsOn(date))
+    .filter(p => p.fields.Amount);
+
+  if (budget) distribute(remainingAfterMinimum(payments, budget), payments);
+
+  return payments;
+}
+
+function distribute(snowball, payments) {
+  let remaining = snowball;
+  for (const payment of payments) {
+    const extra = amount(Math.min(remaining, balanceAfter(payment)));
+    payment.fields.Amount += extra;
+    remaining -= extra;
+  }
+}
+
+function balanceAfter(payment) {
+  return balance(account(payment)) - payment.fields.Amount;
+}
+
+function remainingAfterMinimum(payments, budget) {
+  let remaining = budget;
+  for (const payment of payments) {
+    if (remaining <= payment.fields.Amount)
+      payment.fields.Amount = amount(remaining);
+
+    remaining -= payment.fields.Amount;
+  }
+  return remaining;
+}
+
+function account(payment) {
+  return payment.fields.Account[0];
+}
+
+function amount(value) {
+  return parseFloat(value.toFixed(2));
+}
+
+function balance(account) {
+  return account.getCellValue("Remaining");
 }
 
 async function create(payments) {
   return await base.getTable("Payments").createRecordsAsync(payments);
-}
-
-function outZeroDollarPayments(account) {
-  return 0 < paymentAmount(account);
 }
 
 function toPaymentsOn(date) {
@@ -56,8 +95,8 @@ function toPaymentsOn(date) {
     fields: {
       Date: date,
       Amount: paymentAmount(account),
-      Account: [{ id: account.id }],
-      "Payments Remaining": account.getCellValue("Payments Remaining")
+      Account: [account],
+      "Payments Remaining": account.getCellValue("Payments Remaining"),
     },
   });
 }
@@ -66,7 +105,7 @@ async function queryPayingAccounts() {
   return await base
     .getTable("Accounts")
     .getView("Paying")
-    .selectRecordsAsync({ fields: [" Payment ", "Payments Remaining"] });
+    .selectRecordsAsync({ fields: [" Payment ", "Payments Remaining", "Remaining"] });
 }
 
 function date(payment) {
@@ -75,4 +114,8 @@ function date(payment) {
 
 function paymentAmount(account) {
   return account.getCellValue(" Payment ");
+}
+
+function by(fn) {
+  return (a, b) => fn(a) - fn(b);
 }
