@@ -76,7 +76,7 @@ describe("The payment generator", () => {
 
   describe("when generating payments", () => {
     beforeEach(async () => {
-      _mocked.records = [doctorAccount, hospitalAccount, dentistAccount];
+      _mocked.records = [doctorAccount, hospitalAccount, dentistAccount, kneecapperAccount];
       await subject.generatePayments(_mocked.today);
     });
 
@@ -87,7 +87,7 @@ describe("The payment generator", () => {
 
     it("specifies the fields", () => {
       expect(_mocked.selectRecordsAsync).toHaveBeenCalledWith(
-        expect.objectContaining({ fields: [" Payment ", "Payments Remaining", "Remaining"] })
+        expect.objectContaining({ fields: [" Payment ", "Payments Remaining", "Remaining", "IsInCollection"] })
       );
     });
 
@@ -116,7 +116,7 @@ describe("The payment generator", () => {
 
       describe("equal to the total payments", () => {
         beforeEach(async () => {
-          await subject.generatePayments(_mocked.today, 45.19);
+          await subject.generatePayments(_mocked.today, 65.19);
         });
 
         it("generates the same payments", () => {
@@ -129,7 +129,7 @@ describe("The payment generator", () => {
 
       describe("less than the total payments", () => {
         beforeEach(async () => {
-          await subject.generatePayments(_mocked.today, 40);
+          await subject.generatePayments(_mocked.today, 60);
         });
 
         it("generates an forshortened list of payments", () => {
@@ -142,7 +142,7 @@ describe("The payment generator", () => {
 
       describe("greater than the total payments", () => {
         beforeEach(async () => {
-          await subject.generatePayments(_mocked.today, 50);
+          await subject.generatePayments(_mocked.today, 70);
         });
 
         it("snowballs the payments", () => {
@@ -155,7 +155,7 @@ describe("The payment generator", () => {
         describe("by enough to pay off the first account", () => {
           beforeEach(async () => {
             _mocked.createRecordsAsync.mockClear();
-            await subject.generatePayments(_mocked.today, 900);
+            await subject.generatePayments(_mocked.today, 1893);
           });
 
           it("pays off the first account and adds to the second", () => {
@@ -181,22 +181,43 @@ const hospitalAccount = record({
   " Payment ": 25.19,
   "Payments Remaining": 34,
   "Remaining": 856.00,
+  "IsInCollection": false,
 });
+
 const doctorAccount = record({
   id: 4,
   " Payment ": 20.0,
   "Payments Remaining": 125,
   "Remaining": 2500.00,
+  "IsInCollection": false,
 });
+
+const kneecapperAccount = record({
+  id: 12,
+  " Payment ": 20.0,
+  "Payments Remaining": 90,
+  "Remaining": 1829.00,
+  "IsInCollection": true,
+});
+
 const dentistAccount = record({
   id: 7,
   " Payment ": 0.0,
   "Payments Remaining": null,
   "Remaining": 400.00,
+  "IsInCollection": false,
 });
 
 const _expected = {
   payments: [
+    {
+      fields: {
+        Date: _mocked.today,
+        Amount: 20.00,
+        Account: [kneecapperAccount],
+        "Payments Remaining": 89,
+      },
+    },
     {
       fields: {
         Date: _mocked.today,
@@ -218,6 +239,14 @@ const _expected = {
     {
       fields: {
         Date: _mocked.today,
+        Amount: 20.00,
+        Account: [kneecapperAccount],
+        "Payments Remaining": 89,
+      },
+    },
+    {
+      fields: {
+        Date: _mocked.today,
         Amount: 25.19,
         Account: [hospitalAccount],
         "Payments Remaining": 33,
@@ -236,7 +265,15 @@ const _expected = {
     {
       fields: {
         Date: _mocked.today,
-        Amount: 30.0,
+        Amount: 30.00,
+        Account: [kneecapperAccount],
+        "Payments Remaining": 89,
+      },
+    },
+    {
+      fields: {
+        Date: _mocked.today,
+        Amount: 20.0,
         Account: [hospitalAccount],
         "Payments Remaining": 33,
       },
@@ -251,6 +288,14 @@ const _expected = {
     },
   ],
   snowballPayoffPayments: [
+    {
+      fields: {
+        Date: _mocked.today,
+        Amount: 1829.00,
+        Account: [kneecapperAccount],
+        "Payments Remaining": 0,
+      },
+    },
     {
       fields: {
         Date: _mocked.today,
