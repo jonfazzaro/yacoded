@@ -105,7 +105,7 @@ describe("The payment generator", () => {
     });
 
     it("outputs the results", () => {
-      expect(output.markdown).toHaveBeenCalledWith("Created 3 of 2 payments.");
+      expect(output.markdown).toHaveBeenCalledWith("Created 2 of 3 payments.");
     });
 
     describe("given a budget amount", () => {
@@ -215,7 +215,7 @@ const _expected = {
         Date: _mocked.today,
         Amount: 20.00,
         Account: [kneecapperAccount],
-        "Payments Remaining": 89,
+        "Payments Remaining": 90,
       },
     },
     {
@@ -241,7 +241,7 @@ const _expected = {
         Date: _mocked.today,
         Amount: 20.00,
         Account: [kneecapperAccount],
-        "Payments Remaining": 89,
+        "Payments Remaining": 90,
       },
     },
     {
@@ -265,15 +265,15 @@ const _expected = {
     {
       fields: {
         Date: _mocked.today,
-        Amount: 30.00,
+        Amount: 24.81,
         Account: [kneecapperAccount],
-        "Payments Remaining": 89,
+        "Payments Remaining": 90,
       },
     },
     {
       fields: {
         Date: _mocked.today,
-        Amount: 20.0,
+        Amount: 25.19,
         Account: [hospitalAccount],
         "Payments Remaining": 33,
       },
@@ -299,17 +299,17 @@ const _expected = {
     {
       fields: {
         Date: _mocked.today,
-        Amount: 856.00,
+        Amount: 44.00,
         Account: [hospitalAccount],
-        "Payments Remaining": 0,
+        "Payments Remaining": 32,
       },
     },
     {
       fields: {
         Date: _mocked.today,
-        Amount: 44.0,
+        Amount: 20.0,
         Account: [doctorAccount],
-        "Payments Remaining": 122,
+        "Payments Remaining": 124,
       },
     },
   ],
@@ -327,7 +327,7 @@ _mocked.selectRecordsAsync = jest.fn(() =>
   Promise.resolve({ records: _mocked.records })
 );
 
-_mocked.createRecordsAsync = jest.fn(() => Promise.resolve([1, 2, 3]));
+_mocked.createRecordsAsync = jest.fn(() => Promise.resolve([1, 2]));
 
 _mocked.getView = jest.fn();
 

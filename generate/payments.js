@@ -9,7 +9,7 @@ module.exports = {
 
 ///
 
-("use strict");
+"use strict";
 
 function addMonths(date, months) {
   const d = date.getDate();
@@ -51,12 +51,6 @@ function createPayments(accounts, date, budget) {
   updateNumberOfRemaining(payments);
 
   return payments;
-}
-
-function sorted(accounts) {
-  let result = accounts.slice()
-  result.sort(byCollectionThenBalance())
-  return result
 }
 
 function updateNumberOfRemaining(payments) {
