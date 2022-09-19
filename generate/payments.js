@@ -9,7 +9,7 @@ module.exports = {
 
 ///
 
-("use strict");
+"use strict";
 
 function addMonths(date, months) {
   const d = date.getDate();
@@ -42,21 +42,23 @@ async function generatePayments(date, budget) {
 function createPayments(accounts, date, budget) {
   const payments = accounts
     .slice()
-    .sort(by(balance))
+    .sort(byCollectionThenBalance)
     .map(toPaymentsOn(date))
     .filter(p => p.fields.Amount);
 
   if (budget) distribute(remainingAfterMinimum(payments, budget), payments);
 
-  updateNumberOfRemaining(payments)
+  updateNumberOfRemaining(payments);
 
   return payments;
 }
 
 function updateNumberOfRemaining(payments) {
   for (const payment of payments) {
-    payment.fields["Payments Remaining"] = parseInt(balanceAfter(payment)/paymentAmount(account(payment)).toFixed(0))
-  } 
+    payment.fields["Payments Remaining"] = parseInt(
+      balanceAfter(payment) / paymentAmount(account(payment)).toFixed(0)
+    );
+  }
 }
 
 function distribute(snowball, payments) {
@@ -114,7 +116,14 @@ async function queryPayingAccounts() {
   return await base
     .getTable("Accounts")
     .getView("Paying")
-    .selectRecordsAsync({ fields: [" Payment ", "Payments Remaining", "Remaining"] });
+    .selectRecordsAsync({
+      fields: [
+        " Payment ",
+        "Payments Remaining",
+        "Remaining",
+        "IsInCollection",
+      ],
+    });
 }
 
 function date(payment) {
@@ -125,6 +134,10 @@ function paymentAmount(account) {
   return account.getCellValue(" Payment ");
 }
 
-function by(fn) {
-  return (a, b) => fn(a) - fn(b);
+function isCollection(account) {
+  return account.getCellValue("IsInCollection")
+}
+
+function byCollectionThenBalance(a,b) {
+  return isCollection(b) - isCollection(a) || balance(a) - balance(b);
 }
