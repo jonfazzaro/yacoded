@@ -40,25 +40,33 @@ async function generatePayments(date, budget) {
 }
 
 function createPayments(accounts, date, budget) {
-  const payments = accounts
-    .slice()
+  const payments = copy(accounts)
+    .filter(hasBalance)
     .sort(byCollectionThenBalance)
     .map(toPaymentsOn(date))
-    .filter(p => p.fields.Amount);
+    .filter(nonZero);
 
   if (budget) distribute(remainingAfterMinimum(payments, budget), payments);
 
   updateNumberOfRemaining(payments);
 
-  return payments;
+  return payments.filter(nonZero);
 }
 
 function updateNumberOfRemaining(payments) {
   for (const payment of payments) {
-    payment.fields["Payments Remaining"] = parseInt(
+    payment.fields["Payments Remaining"] = Math.ceil(
       balanceAfter(payment) / paymentAmount(account(payment)).toFixed(0)
     );
   }
+}
+
+function hasBalance(account) {
+  return account.getCellValue("Remaining");
+}
+
+function nonZero(payment) {
+  return payment.fields.Amount;
 }
 
 function distribute(snowball, payments) {
@@ -135,9 +143,13 @@ function paymentAmount(account) {
 }
 
 function isCollection(account) {
-  return account.getCellValue("IsInCollection")
+  return account.getCellValue("IsInCollection");
 }
 
-function byCollectionThenBalance(a,b) {
+function byCollectionThenBalance(a, b) {
   return isCollection(b) - isCollection(a) || balance(a) - balance(b);
+}
+
+function copy(array) {
+  return array.slice();
 }

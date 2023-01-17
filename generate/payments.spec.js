@@ -76,7 +76,7 @@ describe("The payment generator", () => {
 
   describe("when generating payments", () => {
     beforeEach(async () => {
-      _mocked.records = [doctorAccount, hospitalAccount, dentistAccount, kneecapperAccount];
+      _mocked.records = [doctorAccount, hospitalAccount, dentistAccount, kneecapperAccount, snowballedAccount];
       await subject.generatePayments(_mocked.today);
     });
 
@@ -208,6 +208,14 @@ const dentistAccount = record({
   "IsInCollection": false,
 });
 
+const snowballedAccount = record({
+  id: 23,
+  " Payment ": 20.0,
+  "Payments Remaining": 4,
+  "Remaining": 0.00,
+  "IsInCollection": false, 
+})
+
 const _expected = {
   payments: [
     {
@@ -215,7 +223,7 @@ const _expected = {
         Date: _mocked.today,
         Amount: 20.00,
         Account: [kneecapperAccount],
-        "Payments Remaining": 90,
+        "Payments Remaining": 91,
       },
     },
     {
@@ -223,7 +231,7 @@ const _expected = {
         Date: _mocked.today,
         Amount: 25.19,
         Account: [hospitalAccount],
-        "Payments Remaining": 33,
+        "Payments Remaining": 34,
       },
     },
     {
@@ -241,7 +249,7 @@ const _expected = {
         Date: _mocked.today,
         Amount: 20.00,
         Account: [kneecapperAccount],
-        "Payments Remaining": 90,
+        "Payments Remaining": 91,
       },
     },
     {
@@ -249,7 +257,7 @@ const _expected = {
         Date: _mocked.today,
         Amount: 25.19,
         Account: [hospitalAccount],
-        "Payments Remaining": 33,
+        "Payments Remaining": 34,
       },
     },
     {
@@ -257,7 +265,7 @@ const _expected = {
         Date: _mocked.today,
         Amount: 14.81,
         Account: [doctorAccount],
-        "Payments Remaining": 124,
+        "Payments Remaining": 125,
       },
     },
   ],
@@ -267,7 +275,7 @@ const _expected = {
         Date: _mocked.today,
         Amount: 24.81,
         Account: [kneecapperAccount],
-        "Payments Remaining": 90,
+        "Payments Remaining": 91,
       },
     },
     {
@@ -275,7 +283,7 @@ const _expected = {
         Date: _mocked.today,
         Amount: 25.19,
         Account: [hospitalAccount],
-        "Payments Remaining": 33,
+        "Payments Remaining": 34,
       },
     },
     {
@@ -301,7 +309,7 @@ const _expected = {
         Date: _mocked.today,
         Amount: 44.00,
         Account: [hospitalAccount],
-        "Payments Remaining": 32,
+        "Payments Remaining": 33,
       },
     },
     {
